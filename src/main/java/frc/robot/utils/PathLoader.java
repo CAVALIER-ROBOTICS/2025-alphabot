@@ -12,6 +12,8 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.pathfinding.Pathfinding;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.PathingConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 /** Add your docs here. */
@@ -82,6 +85,10 @@ public class PathLoader {
 
     public static Command loadAuto(String name) {
         return new PathPlannerAuto(name);
+    }
+
+    public static Command pathfindToPose(Pose2d pose) {
+        return AutoBuilder.pathfindToPose(pose, PathingConstants.PATHFINDING_CONSTRAINTS);
     }
 
     public static void initSendableChooser() {

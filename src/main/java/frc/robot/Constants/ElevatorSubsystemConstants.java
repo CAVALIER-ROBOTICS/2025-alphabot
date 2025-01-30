@@ -10,4 +10,6 @@ public class ElevatorSubsystemConstants
     public static final int LEFT_MOTOR_ID = 0;
     public static final int RIGHT_MOTOR_ID = 0;
     public static final int GRABBER_MOTOR_ID = 0;
+
+    public static final int CORAL_SENSOR_PROXIMITY_THRESHOLD = 200;
 }
