@@ -39,15 +39,15 @@ public class CavbotsPhotonCamera {
         return results.get(results.size() - 1);
     }
 
-    public Optional<EstimatedRobotPose> getCameraEstimatedPose3d(Pose2d previousPose) {
+    public Optional<EstimatedRobotPose> getCameraEstimatedPose3d() {
         var latest = getLatestResult();
         return estimator.update(latest);
     }
 
-    public PoseTimestampPair fetchPose(Pose2d previPose2d) {  //returns null if there is no new pose
+    public PoseTimestampPair fetchPose() {  //returns null if there is no new pose
         EstimatedRobotPose ret = null;
         try {
-            ret = getCameraEstimatedPose3d(previPose2d).get();
+            ret = getCameraEstimatedPose3d().get();
         } catch (NoSuchElementException e) {}
         if(ret != null && getNumTargets() > 1) {
             return new PoseTimestampPair(ret.estimatedPose.toPose2d(), ret.timestampSeconds);
