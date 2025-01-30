@@ -46,9 +46,10 @@ public class PathLoader {
         return false;
     }
 
-    public static void configureAutoBuilder(DriveSubsystem driveSub) {
+    public static void configureAutoBuilder(DriveSubsystem driveSub, CavbotsPoseEstimator estimator) {
         Consumer<Pose2d> resetPose = pose -> {
-            driveSub.updatePoseEstimator(pose);
+            driveSub.setYaw(pose.getRotation());
+            estimator.setEstimatorPose2d(pose);
         };
 
         Consumer<ChassisSpeeds> drivelol = speeds -> driveSub.drive(speeds);
@@ -67,7 +68,7 @@ public class PathLoader {
         }
         
         AutoBuilder.configure(
-                driveSub::getEstimatedPosition, 
+                estimator::getPose2d, 
                 resetPose,
                 driveSub::getRobotRelativeChassisSpeeds,
                 drivelol,

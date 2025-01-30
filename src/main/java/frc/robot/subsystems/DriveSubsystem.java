@@ -4,16 +4,81 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
+
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveSubsystemConstants;
+import frc.robot.utils.CavbotsPoseEstimator;
+import frc.robot.utils.NeoKrakenModule;
 
 public class DriveSubsystem extends SubsystemBase {
-  /** Creates a new DriveSubsystem. */
+  NeoKrakenModule fleft, fright, bleft, bright;
+  Pigeon2 pigeon = new Pigeon2(DriveSubsystemConstants.PIGEON_ID);
+  CavbotsPoseEstimator poseEstimator;
+
   public DriveSubsystem() {
-    
+    fleft = new NeoKrakenModule(DriveSubsystemConstants.FLEFT_DRIVE_ID, DriveSubsystemConstants.FLEFT_STEER_ID, DriveSubsystemConstants.FLEFT_CANCODER, 0);
+    fright = new NeoKrakenModule(DriveSubsystemConstants.FRIGHT_DRIVE_ID, DriveSubsystemConstants.FRIGHT_STEER_ID, DriveSubsystemConstants.FRIGHT_CANCODER, 0);
+    bleft = new NeoKrakenModule(DriveSubsystemConstants.BLEFT_DRIVE_ID, DriveSubsystemConstants.BLEFT_STEER_ID, DriveSubsystemConstants.BLEFT_CANCODER, 0);
+    bright = new NeoKrakenModule(DriveSubsystemConstants.BRIGHT_DRIVE_ID, DriveSubsystemConstants.BRIGHT_STEER_ID, DriveSubsystemConstants.BRIGHT_CANCODER, 0);
+
+    poseEstimator = new CavbotsPoseEstimator(this, new Pose2d());
+  }
+
+  public void setModuleStates(SwerveModuleState[] states) {
+    fleft.setModuleState(states[0]);
+    fright.setModuleState(states[1]);
+    bleft.setModuleState(states[2]);
+    bright.setModuleState(states[3]);
+  }
+
+  public void drive(ChassisSpeeds speeds) {
+    SwerveModuleState[] states = DriveSubsystemConstants.M_KINEMATICS.toSwerveModuleStates(speeds);
+    setModuleStates(states);
+  }
+
+  public void setYaw(Rotation2d rot) {
+    pigeon.setYaw(rot.getDegrees());
+  }
+
+  public SwerveModulePosition[] getModulePositions() {
+    return new SwerveModulePosition[] {
+      fleft.getSwerveModulePosition(),
+      fright.getSwerveModulePosition(),
+      bleft.getSwerveModulePosition(),
+      bright.getSwerveModulePosition()
+    };
+  }
+
+  public SwerveModuleState[] getSwerveModuleStates() {
+    return new SwerveModuleState[] {
+      fleft.getSwerveModuleState(),
+      fright.getSwerveModuleState(),
+      bleft.getSwerveModuleState(),
+      bright.getSwerveModuleState()
+    };
+  }
+
+  public ChassisSpeeds getRobotRelativeChassisSpeeds() {
+    return DriveSubsystemConstants.M_KINEMATICS.toChassisSpeeds(getSwerveModuleStates());
+  }
+
+  public Rotation2d getAngle() {
+    return pigeon.getRotation2d();
+  }
+
+  public CavbotsPoseEstimator getPoseEstimator() {
+    return poseEstimator;
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    poseEstimator.updateWithVisionAndOdometry(getAngle(), getModulePositions());
   }
 }
