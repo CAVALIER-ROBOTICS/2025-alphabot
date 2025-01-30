@@ -4,18 +4,29 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.DriveSubsystem;
 
 public class FieldDriveCommand extends Command {
-  public FieldDriveCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  DoubleSupplier x, y, rotX;
+  DriveSubsystem driveSubsystem;
+  public FieldDriveCommand(DriveSubsystem driveSubsystem, DoubleSupplier x, DoubleSupplier y, DoubleSupplier rotX) {
+    this.x = x;
+    this.y = y;
+    this.rotX = rotX;
   }
 
   @Override
   public void initialize() {}
 
   @Override
-  public void execute() {}
+  public void execute() {
+    ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(x.getAsDouble(), y.getAsDouble(), rotX.getAsDouble(), driveSubsystem.getAngle());
+    driveSubsystem.drive(fieldRelativeSpeeds);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
