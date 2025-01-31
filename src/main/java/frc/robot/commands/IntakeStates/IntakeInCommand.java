@@ -22,7 +22,6 @@ public class IntakeInCommand extends Command {
   @Override
   public void execute() {
     intakeSubsystem.setPosition(IntakeSubsystemConstants.INTAKE_IN_POS);
-    intakeSubsystem.setIntakeSpin(IntakeSubsystemConstants.INTAKE_IN_POS);
   }
 
   // Called once the command ends or is interrupted.
