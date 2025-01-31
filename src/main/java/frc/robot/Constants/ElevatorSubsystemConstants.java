@@ -14,4 +14,10 @@ public class ElevatorSubsystemConstants
     public static final int CORAL_SENSOR_PROXIMITY_THRESHOLD = 200;
 
     public static final int NEO550_CURRENT_LIMIT = 15;
+
+    public static final double L2_ENCODER_POSITION = 0.0;
+    public static final double L3_ENCODER_POSITION = 0.0;
+    public static final double HP_ENCODER_POSITION = 0.0;
+
+    public static final double GRABBER_SPEED = 1.0;
 }
