@@ -7,9 +7,9 @@ package frc.robot.Constants;
 /** Add your docs here. */
 public class ElevatorSubsystemConstants 
 {
-    public static final int LEFT_MOTOR_ID = 0;
-    public static final int RIGHT_MOTOR_ID = 0;
-    public static final int GRABBER_MOTOR_ID = 0;
+    public static final int LEFT_MOTOR_ID = 23;
+    public static final int RIGHT_MOTOR_ID = 24;
+    public static final int GRABBER_MOTOR_ID = 25;
 
     public static final int CORAL_SENSOR_PROXIMITY_THRESHOLD = 200;
 
