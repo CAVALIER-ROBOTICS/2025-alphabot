@@ -17,6 +17,8 @@ public class FieldDriveCommand extends Command {
     this.x = x;
     this.y = y;
     this.rotX = rotX;
+    this.driveSubsystem = driveSubsystem;
+    addRequirements(driveSubsystem);
   }
 
   @Override
@@ -24,7 +26,7 @@ public class FieldDriveCommand extends Command {
 
   @Override
   public void execute() {
-    ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(x.getAsDouble(), y.getAsDouble(), rotX.getAsDouble(), driveSubsystem.getAngle());
+    ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(x.getAsDouble() * 4.5, y.getAsDouble() * 4.5, rotX.getAsDouble() * Math.toRadians(570), driveSubsystem.getAngle());
     driveSubsystem.drive(fieldRelativeSpeeds);
   }
 

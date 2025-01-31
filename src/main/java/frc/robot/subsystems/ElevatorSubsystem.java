@@ -36,6 +36,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     SparkMaxConfig smc = new SparkMaxConfig();
     smc.follow(primary, true);
     secondary.configure(smc, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    SparkMaxConfig neoConfig = new SparkMaxConfig();
+    neoConfig.smartCurrentLimit(ElevatorSubsystemConstants.NEO550_CURRENT_LIMIT);
+    spinGrabber.configure(neoConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    rightEncoder.setPosition(0.0);
   }
 
   public void setSpin(double percent)

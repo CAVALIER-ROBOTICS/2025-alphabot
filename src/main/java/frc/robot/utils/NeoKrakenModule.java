@@ -105,7 +105,7 @@ public class NeoKrakenModule {
     }
 
     public NeoKrakenModule(int drive, int steer, int encoderId, double offsetValue, String can) {
-        driveMotor = new TalonFX(drive);
+        driveMotor = new TalonFX(drive, can);
         steerMotor = new SparkMax(steer, MotorType.kBrushless);
         encoderObject = new CANcoder(encoderId, can);
         offset = offsetValue;

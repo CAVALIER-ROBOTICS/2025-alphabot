@@ -43,8 +43,17 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setPosition(double position)
   {
-    double setpoint = pid.calculate(getAbsolutePosition(),position);
+    double setpoint = pid.calculate(getAbsolutePosition(), position);
     setAnglePercent(setpoint);
+  }
+
+  public void stopAll() {
+    intakeAngle.set(0.0);
+    intakeSpin.set(0.0);
+  }
+
+  public double getFlywheelCurrentDraw() {
+    return intakeSpin.getOutputCurrent();
   }
 
   @Override

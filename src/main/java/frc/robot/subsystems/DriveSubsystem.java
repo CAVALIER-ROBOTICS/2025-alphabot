@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.DriveSubsystemConstants;
@@ -19,14 +20,14 @@ import frc.robot.utils.NeoKrakenModule;
 
 public class DriveSubsystem extends SubsystemBase {
   NeoKrakenModule fleft, fright, bleft, bright;
-  Pigeon2 pigeon = new Pigeon2(DriveSubsystemConstants.PIGEON_ID);
+  Pigeon2 pigeon = new Pigeon2(DriveSubsystemConstants.PIGEON_ID, DriveSubsystemConstants.CANIVORE_NAME);
   CavbotsPoseEstimator poseEstimator;
 
   public DriveSubsystem() {
-    fleft = new NeoKrakenModule(DriveSubsystemConstants.FLEFT_DRIVE_ID, DriveSubsystemConstants.FLEFT_STEER_ID, DriveSubsystemConstants.FLEFT_CANCODER, 0);
-    fright = new NeoKrakenModule(DriveSubsystemConstants.FRIGHT_DRIVE_ID, DriveSubsystemConstants.FRIGHT_STEER_ID, DriveSubsystemConstants.FRIGHT_CANCODER, 0);
-    bleft = new NeoKrakenModule(DriveSubsystemConstants.BLEFT_DRIVE_ID, DriveSubsystemConstants.BLEFT_STEER_ID, DriveSubsystemConstants.BLEFT_CANCODER, 0);
-    bright = new NeoKrakenModule(DriveSubsystemConstants.BRIGHT_DRIVE_ID, DriveSubsystemConstants.BRIGHT_STEER_ID, DriveSubsystemConstants.BRIGHT_CANCODER, 0);
+    fleft = new NeoKrakenModule(DriveSubsystemConstants.FLEFT_DRIVE_ID, DriveSubsystemConstants.FLEFT_STEER_ID, DriveSubsystemConstants.FLEFT_CANCODER, DriveSubsystemConstants.FLEFT_OFFSET, DriveSubsystemConstants.CANIVORE_NAME);
+    fright = new NeoKrakenModule(DriveSubsystemConstants.FRIGHT_DRIVE_ID, DriveSubsystemConstants.FRIGHT_STEER_ID, DriveSubsystemConstants.FRIGHT_CANCODER, DriveSubsystemConstants.FRIGHT_OFFSET, DriveSubsystemConstants.CANIVORE_NAME);
+    bleft = new NeoKrakenModule(DriveSubsystemConstants.BLEFT_DRIVE_ID, DriveSubsystemConstants.BLEFT_STEER_ID, DriveSubsystemConstants.BLEFT_CANCODER, DriveSubsystemConstants.BLEFT_OFFSET, DriveSubsystemConstants.CANIVORE_NAME);
+    bright = new NeoKrakenModule(DriveSubsystemConstants.BRIGHT_DRIVE_ID, DriveSubsystemConstants.BRIGHT_STEER_ID, DriveSubsystemConstants.BRIGHT_CANCODER, DriveSubsystemConstants.BRIGHT_OFFSET, DriveSubsystemConstants.CANIVORE_NAME);
 
     poseEstimator = new CavbotsPoseEstimator(this, new Pose2d());
   }
@@ -79,6 +80,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("FLEFT", fleft.getEncoderPosition());
+    SmartDashboard.putNumber("FRIGHT", fright.getEncoderPosition());
+    SmartDashboard.putNumber("BLEFT", bleft.getEncoderPosition());
+    SmartDashboard.putNumber("BRIGHT", bright.getEncoderPosition());
+
     poseEstimator.updateWithVisionAndOdometry(getAngle(), getModulePositions());
   }
 }

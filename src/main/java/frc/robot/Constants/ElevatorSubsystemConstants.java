@@ -12,4 +12,6 @@ public class ElevatorSubsystemConstants
     public static final int GRABBER_MOTOR_ID = 0;
 
     public static final int CORAL_SENSOR_PROXIMITY_THRESHOLD = 200;
+
+    public static final int NEO550_CURRENT_LIMIT = 15;
 }
