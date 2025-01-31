@@ -65,6 +65,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     setSpin(speed);
   }
 
+  public void stopAll() {
+    setSpin(0.0);
+    setGrabber(0.0);    
+  }
+
   public boolean getIsCoralInHoldingPosition() {
     return coralSensor.getProximity() < ElevatorSubsystemConstants.CORAL_SENSOR_PROXIMITY_THRESHOLD;
   }

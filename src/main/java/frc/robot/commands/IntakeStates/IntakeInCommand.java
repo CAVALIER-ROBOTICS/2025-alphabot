@@ -2,15 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.IntakeStates;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeSubsystemConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeOutCommand extends Command {
+public class IntakeInCommand extends Command {
   IntakeSubsystem intakeSubsystem;
-  public IntakeOutCommand(IntakeSubsystem intakeSubsystem) {
+  public IntakeInCommand(IntakeSubsystem intakeSubsystem) {
     this.intakeSubsystem = intakeSubsystem;
   }
 
@@ -21,8 +21,7 @@ public class IntakeOutCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intakeSubsystem.setPosition(IntakeSubsystemConstants.INTAKE_OUT_POS);
-    intakeSubsystem.setIntakeSpin(IntakeSubsystemConstants.INTAKE_SPIN_SPEED);
+    intakeSubsystem.setPosition(IntakeSubsystemConstants.INTAKE_IN_POS);
   }
 
   // Called once the command ends or is interrupted.
@@ -34,6 +33,6 @@ public class IntakeOutCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (intakeSubsystem.getFlywheelCurrentDraw() > IntakeSubsystemConstants.SUCCESSFUL_BALL_INTAKE_CURRENT_DRAW);
+    return false;
   }
 }
