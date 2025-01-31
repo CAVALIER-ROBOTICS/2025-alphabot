@@ -7,8 +7,8 @@ package frc.robot.Constants;
 /** Add your docs here. */
 public class IntakeSubsystemConstants 
 {
-    public static final int INTAKE_ANGLE_MOTORID = 0;
-    public static final int INTAKE_SPIN_MOTORID = 0;
+    public static final int INTAKE_ANGLE_MOTORID = 46;
+    public static final int INTAKE_SPIN_MOTORID = 47;
     public static final int DUTY_CYCLE_ENCODER_ID = 0;
 
     public static final int SUCCESSFUL_BALL_INTAKE_CURRENT_DRAW = 25;
