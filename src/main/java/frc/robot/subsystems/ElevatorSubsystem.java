@@ -28,7 +28,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   RelativeEncoder rightEncoder = primary.getEncoder();
 
-  PIDController pid = new PIDController(0.1, 0, 0);
+  PIDController pid = new PIDController(0.01, 0, 0);
 
 
   /** Creates a new ElevatorSubsystem. */
@@ -51,7 +51,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void setSpin(double percent)
   {
-    primary.set(-percent);
+    primary.set(percent);
   }
 
   public void setGrabber(double percent)
@@ -61,7 +61,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public double getPosition()
   {
-    return -rightEncoder.getPosition();
+    return rightEncoder.getPosition();
   }
 
   public void setPosition(double position)
@@ -76,7 +76,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public boolean getIsCoralInHoldingPosition() {
-    return coralSensor.getProximity() < ElevatorSubsystemConstants.CORAL_SENSOR_PROXIMITY_THRESHOLD;
+    return coralSensor.getProximity() > ElevatorSubsystemConstants.CORAL_SENSOR_PROXIMITY_THRESHOLD;
   }
 
   public boolean isElevatorPIDAtSetpoint() {

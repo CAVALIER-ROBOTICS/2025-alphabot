@@ -28,25 +28,25 @@ public class RobotContainer {
   XboxController driver = new XboxController(0);
   XboxController operator = new XboxController(1);
 
-  DriveSubsystem driveSubsystem = new DriveSubsystem();
-  IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  // DriveSubsystem driveSubsystem = new DriveSubsystem();
+  // IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
   public RobotContainer() {
     configureDefaultBindings();
-    PathLoader.configureAutoBuilder(driveSubsystem, driveSubsystem.getPoseEstimator());
+    // PathLoader.configureAutoBuilder(driveSubsystem, driveSubsystem.getPoseEstimator());
     configureBindings();
   }
 
   private void configureBindings() {
     configureElevatorBindings();
-    configureDriveBindings();
-    configureIntakeBindings();
+    // configureDriveBindings();
+    // configureIntakeBindings();
   }
 
   private void configureDefaultBindings() {
-    driveSubsystem.setDefaultCommand(new FieldDriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX));
-    intakeSubsystem.setDefaultCommand(new IntakeInCommand(intakeSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    // driveSubsystem.setDefaultCommand(new FieldDriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX));
+    // intakeSubsystem.setDefaultCommand(new IntakeInCommand(intakeSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
   }
 
   private void configureElevatorBindings() {
@@ -60,15 +60,15 @@ public class RobotContainer {
     scoreCancel.onTrue(new ElevatorRetractCommand(elevatorSubsystem));
   }
 
-  private void configureDriveBindings() {
-    JoystickButton zeroDriverGyro = new JoystickButton(driver, 4);
-    zeroDriverGyro.onTrue(new InstantCommand(driveSubsystem::driverGyroZero));
-  }
+  // private void configureDriveBindings() {
+  //   JoystickButton zeroDriverGyro = new JoystickButton(driver, 4);
+  //   zeroDriverGyro.onTrue(new InstantCommand(driveSubsystem::driverGyroZero));
+  // }
 
-  private void configureIntakeBindings() {
-    JoystickButton intakeOut = new JoystickButton(driver, 5);
-    intakeOut.toggleOnTrue(new IntakeOutCommand(intakeSubsystem));
-  }
+  // private void configureIntakeBindings() {
+  //   JoystickButton intakeOut = new JoystickButton(driver, 5);
+  //   intakeOut.toggleOnTrue(new IntakeOutCommand(intakeSubsystem));
+  // }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");

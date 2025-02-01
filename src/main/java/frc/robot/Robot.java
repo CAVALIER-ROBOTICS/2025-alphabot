@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    field.setRobotPose(m_robotContainer.driveSubsystem.getPoseEstimator().getPose2d());
+    // field.setRobotPose(m_robotContainer.driveSubsystem.getPoseEstimator().getPose2d());
     SmartDashboard.putData("Field", field);
     CommandScheduler.getInstance().run();
   }
