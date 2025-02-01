@@ -26,7 +26,7 @@ public class FieldDriveCommand extends Command {
 
   @Override
   public void execute() {
-    ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(x.getAsDouble() * 4.5, y.getAsDouble() * 4.5, rotX.getAsDouble() * Math.toRadians(570), driveSubsystem.getAngle());
+    ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(y.getAsDouble() * 4.5, x.getAsDouble() * 4.5, rotX.getAsDouble() * Math.toRadians(570), driveSubsystem.getDriverGyroAngle());
     driveSubsystem.drive(fieldRelativeSpeeds);
   }
 

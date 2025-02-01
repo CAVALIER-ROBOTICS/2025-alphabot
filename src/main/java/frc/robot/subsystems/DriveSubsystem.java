@@ -22,6 +22,7 @@ public class DriveSubsystem extends SubsystemBase {
   NeoKrakenModule fleft, fright, bleft, bright;
   Pigeon2 pigeon = new Pigeon2(DriveSubsystemConstants.PIGEON_ID, DriveSubsystemConstants.CANIVORE_NAME);
   CavbotsPoseEstimator poseEstimator;
+  Rotation2d driverGyroOffset = new Rotation2d();
 
   public DriveSubsystem() {
     fleft = new NeoKrakenModule(DriveSubsystemConstants.FLEFT_DRIVE_ID, DriveSubsystemConstants.FLEFT_STEER_ID, DriveSubsystemConstants.FLEFT_CANCODER, DriveSubsystemConstants.FLEFT_OFFSET, DriveSubsystemConstants.CANIVORE_NAME);
@@ -29,7 +30,7 @@ public class DriveSubsystem extends SubsystemBase {
     bleft = new NeoKrakenModule(DriveSubsystemConstants.BLEFT_DRIVE_ID, DriveSubsystemConstants.BLEFT_STEER_ID, DriveSubsystemConstants.BLEFT_CANCODER, DriveSubsystemConstants.BLEFT_OFFSET, DriveSubsystemConstants.CANIVORE_NAME);
     bright = new NeoKrakenModule(DriveSubsystemConstants.BRIGHT_DRIVE_ID, DriveSubsystemConstants.BRIGHT_STEER_ID, DriveSubsystemConstants.BRIGHT_CANCODER, DriveSubsystemConstants.BRIGHT_OFFSET, DriveSubsystemConstants.CANIVORE_NAME);
 
-    poseEstimator = new CavbotsPoseEstimator(this, new Pose2d());
+    poseEstimator = new CavbotsPoseEstimator(this, new Pose2d(9.506, 4.067, Rotation2d.fromDegrees(0)));
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
@@ -46,6 +47,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void setYaw(Rotation2d rot) {
     pigeon.setYaw(rot.getDegrees());
+  }
+
+  public void driverGyroZero() {
+    driverGyroOffset = getAngle();
   }
 
   public SwerveModulePosition[] getModulePositions() {
@@ -72,6 +77,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Rotation2d getAngle() {
     return pigeon.getRotation2d();
+  }
+
+  public Rotation2d getDriverGyroAngle() {
+    return getAngle().minus(driverGyroOffset);
   }
 
   public CavbotsPoseEstimator getPoseEstimator() {

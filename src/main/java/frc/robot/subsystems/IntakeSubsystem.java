@@ -22,8 +22,8 @@ public class IntakeSubsystem extends SubsystemBase {
   PIDController pid = new PIDController(0,0,0);
   DutyCycleEncoder encoder = new DutyCycleEncoder(IntakeSubsystemConstants.DUTY_CYCLE_ENCODER_ID);
 
-  public IntakeSubsystem() 
-  {
+  public IntakeSubsystem() {
+    encoder.setDutyCycleRange(0, 1);
   }
 
   public double getAbsolutePosition()

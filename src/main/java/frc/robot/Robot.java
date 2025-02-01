@@ -5,13 +5,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utils.PathLoader;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+  Field2d field = new Field2d();
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -19,11 +23,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    field.setRobotPose(m_robotContainer.driveSubsystem.getPoseEstimator().getPose2d());
+    SmartDashboard.putData("Field", field);
     CommandScheduler.getInstance().run();
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -33,7 +40,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = PathLoader.loadAuto("auto");
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

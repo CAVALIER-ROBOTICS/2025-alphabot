@@ -14,7 +14,6 @@ import org.photonvision.targeting.TargetCorner;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -24,7 +23,7 @@ public class CavbotsPhotonCamera {
     PhotonPoseEstimator estimator;
 
     Transform3d cameraInBotSpace = new Transform3d(new Translation3d(0.127, 0, 0.65), new Rotation3d(0, -Math.PI / 12, Math.PI));
-    AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    AprilTagFieldLayout fieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
 
     public CavbotsPhotonCamera(String camName) {
         camera = new PhotonCamera(camName);

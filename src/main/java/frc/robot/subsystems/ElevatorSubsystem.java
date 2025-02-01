@@ -28,25 +28,30 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   RelativeEncoder rightEncoder = primary.getEncoder();
 
-  PIDController pid = new PIDController(0, 0, 0);
+  PIDController pid = new PIDController(0.1, 0, 0);
 
 
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
     SparkMaxConfig smc = new SparkMaxConfig();
-    smc.follow(primary, true);
+    smc.follow(primary, false);
     secondary.configure(smc, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SparkMaxConfig neoConfig = new SparkMaxConfig();
     neoConfig.smartCurrentLimit(ElevatorSubsystemConstants.NEO550_CURRENT_LIMIT);
     spinGrabber.configure(neoConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+    SparkMaxConfig primaryConfig = new SparkMaxConfig();
+    primaryConfig.encoder.positionConversionFactor(1.0);
+    primary.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
     rightEncoder.setPosition(0.0);
+    pid.setTolerance(.2);
   }
 
   public void setSpin(double percent)
   {
-    primary.set(percent);
+    primary.set(-percent);
   }
 
   public void setGrabber(double percent)
@@ -56,7 +61,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public double getPosition()
   {
-    return rightEncoder.getPosition();
+    return -rightEncoder.getPosition();
   }
 
   public void setPosition(double position)
@@ -72,6 +77,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public boolean getIsCoralInHoldingPosition() {
     return coralSensor.getProximity() < ElevatorSubsystemConstants.CORAL_SENSOR_PROXIMITY_THRESHOLD;
+  }
+
+  public boolean isElevatorPIDAtSetpoint() {
+    return pid.atSetpoint();
   }
 
   @Override
