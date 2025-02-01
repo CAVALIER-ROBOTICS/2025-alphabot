@@ -12,6 +12,7 @@ public class IntakeOutCommand extends Command {
   IntakeSubsystem intakeSubsystem;
   public IntakeOutCommand(IntakeSubsystem intakeSubsystem) {
     this.intakeSubsystem = intakeSubsystem;
+    addRequirements(intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.

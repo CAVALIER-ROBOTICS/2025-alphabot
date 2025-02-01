@@ -89,10 +89,6 @@ public class CavbotsPhotonCamera {
             return 0;
         }
         List<PhotonTrackedTarget> tl = result.getTargets();
-        int num = 0;
-        for(PhotonTrackedTarget t: tl) {
-            num++;
-        }
-        return num;
+        return tl.size();
     }
 }

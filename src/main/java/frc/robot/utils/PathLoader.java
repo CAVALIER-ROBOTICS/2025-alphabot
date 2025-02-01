@@ -13,7 +13,6 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -50,9 +49,8 @@ public class PathLoader {
 
     public static void configureAutoBuilder(DriveSubsystem driveSub, CavbotsPoseEstimator estimator) {
         Consumer<Pose2d> resetPose = pose -> {
-            Pose2d pose2 = new Pose2d(pose.getTranslation(), pose.getRotation().rotateBy(Rotation2d.fromDegrees(180)));
-            // driveSub.setYaw(pose2.getRotation());
-            estimator.setEstimatorPose2d(pose2);
+            driveSub.setYaw(pose.getRotation());
+            estimator.setEstimatorPose2d(pose);
         };
 
         Consumer<ChassisSpeeds> drivelol = speeds -> driveSub.drive(speeds);
@@ -102,7 +100,7 @@ public class PathLoader {
         SmartDashboard.putData("Autonomous type", chooser);
     }
 
-    public static String getAutoName() {
+    private static String getAutoName() {
         return chooser.getSelected();
     }
 
