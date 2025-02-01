@@ -24,7 +24,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.utils.PathLoader;
 
-public class RobotContainer {
+public class RobotContainer { //as of 2/1/2025, we are missing two of our three subsystems. llol!
   XboxController driver = new XboxController(0);
   XboxController operator = new XboxController(1);
 
