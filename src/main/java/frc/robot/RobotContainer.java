@@ -10,13 +10,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 import frc.robot.commands.FieldDriveCommand;
 import frc.robot.commands.ElevatorStates.ElevatorGoToPositionCommand;
+import frc.robot.commands.ElevatorStates.ElevatorHPIntakeCommand;
 import frc.robot.commands.ElevatorStates.ElevatorRetractCommand;
+import frc.robot.commands.ElevatorStates.RetractCoralAfterIntakingCommand;
 import frc.robot.commands.IntakeStates.IntakeInCommand;
 import frc.robot.commands.IntakeStates.IntakeOutCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -54,10 +57,16 @@ public class RobotContainer {
     POVButton l3Score = new POVButton(driver, 0);
     POVButton scoreCancel = new POVButton(driver, 180);
 
-    BooleanSupplier runElevatorExtruder = () -> driver.getLeftTriggerAxis() > .25;
+    BooleanSupplier runElevatorExtruder = () -> driver.getRightTriggerAxis() > .25;
     l2Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
     l3Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
     scoreCancel.onTrue(new ElevatorRetractCommand(elevatorSubsystem));
+
+    JoystickButton hpIntakeButton = new JoystickButton(driver, 6);
+    hpIntakeButton.toggleOnTrue(new SequentialCommandGroup(
+      new ElevatorHPIntakeCommand(elevatorSubsystem),
+      new RetractCoralAfterIntakingCommand(elevatorSubsystem).withTimeout(.1)
+    ));
   }
 
   // private void configureDriveBindings() {

@@ -11,6 +11,8 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,6 +41,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     SparkMaxConfig neoConfig = new SparkMaxConfig();
     neoConfig.smartCurrentLimit(ElevatorSubsystemConstants.NEO550_CURRENT_LIMIT);
+    neoConfig.inverted(true);
+    neoConfig.idleMode(IdleMode.kBrake);
     spinGrabber.configure(neoConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SparkMaxConfig primaryConfig = new SparkMaxConfig();

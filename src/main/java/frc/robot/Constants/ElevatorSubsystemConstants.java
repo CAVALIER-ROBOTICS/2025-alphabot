@@ -11,13 +11,15 @@ public class ElevatorSubsystemConstants
     public static final int RIGHT_MOTOR_ID = 24;
     public static final int GRABBER_MOTOR_ID = 25;
 
-    public static final int CORAL_SENSOR_PROXIMITY_THRESHOLD = 1500;
+    public static final int CORAL_SENSOR_PROXIMITY_THRESHOLD = 500;
 
-    public static final int NEO550_CURRENT_LIMIT = 45;
+    public static final int NEO550_CURRENT_LIMIT = 30;
 
-    public static final double L2_ENCODER_POSITION = 13.00;
-    public static final double L3_ENCODER_POSITION = 35;
-    public static final double HP_ENCODER_POSITION = 0.0;
+    public static final double L2_ENCODER_POSITION = 13.0;
+    public static final double L3_ENCODER_POSITION = 35.0;
+    public static final double HP_ENCODER_POSITION = 20.0;
 
     public static final double GRABBER_SPEED = 1.0;
+    public static final double INTAKE_GRABBER_SPEED = 0.4;
+
 }

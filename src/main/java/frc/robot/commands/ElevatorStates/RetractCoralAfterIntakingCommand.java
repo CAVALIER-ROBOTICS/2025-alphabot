@@ -9,9 +9,9 @@ import frc.robot.Constants.ElevatorSubsystemConstants;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorHPIntakeCommand extends Command {
+public class RetractCoralAfterIntakingCommand extends Command {
   ElevatorSubsystem elevatorSubsystem;
-  public ElevatorHPIntakeCommand(ElevatorSubsystem elevatorSubsystem) {
+  public RetractCoralAfterIntakingCommand(ElevatorSubsystem elevatorSubsystem) {
     this.elevatorSubsystem = elevatorSubsystem;
     addRequirements(elevatorSubsystem);
   }
@@ -24,7 +24,7 @@ public class ElevatorHPIntakeCommand extends Command {
   @Override
   public void execute() {
     elevatorSubsystem.setPosition(ElevatorSubsystemConstants.HP_ENCODER_POSITION);
-    elevatorSubsystem.setGrabber(ElevatorSubsystemConstants.INTAKE_GRABBER_SPEED);
+    elevatorSubsystem.setGrabber(-ElevatorSubsystemConstants.INTAKE_GRABBER_SPEED);
   }
 
   // Called once the command ends or is interrupted.
@@ -36,6 +36,6 @@ public class ElevatorHPIntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return elevatorSubsystem.getIsCoralInHoldingPosition();
+    return false;
   }
 }
