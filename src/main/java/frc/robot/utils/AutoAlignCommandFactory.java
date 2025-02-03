@@ -9,7 +9,11 @@ import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.PathingConstants;
+import frc.robot.commands.ElevatorStates.ElevatorRetractCommand;
+import frc.robot.commands.ElevatorStates.AutonomousElevatorCommands.ExtendToHeightThenScoreCommand;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 /** Add your docs here. */
 public class AutoAlignCommandFactory {
@@ -30,7 +34,7 @@ public class AutoAlignCommandFactory {
         }
     }
 
-    private static Pose2d getClosestPose(Pose2d origin, boolean onRedAlliance) {
+    public static Pose2d getClosestPose(Pose2d origin, boolean onRedAlliance) {
         List<Pose2d> poseList = PathingConstants.BLUE_SIDED_SCORING_POSITIONS;
         if(onRedAlliance) {
             poseList = redAllianceScoringPositions;
@@ -38,9 +42,17 @@ public class AutoAlignCommandFactory {
         return origin.nearest(poseList);
     }
 
-    public Command getAutoAlignCommand(Pose2d currentPosition, boolean onRedAlliance) {
+    public static Command getAutoAlignDriveCommand(Pose2d currentPosition, boolean onRedAlliance) {
         checkRedAllianceInitialized();
         Pose2d goalPose = getClosestPose(currentPosition, onRedAlliance);
         return PathLoader.pathfindToPose(goalPose);
+    }
+
+    public static Command getAutoAlignAndScoreCommand(Pose2d currentPosition, ElevatorSubsystem elevatorSubsystem, double elevatorEncoderPosition, boolean onRedAlliance) {
+        return new SequentialCommandGroup(
+            getAutoAlignDriveCommand(currentPosition, onRedAlliance),
+            new ExtendToHeightThenScoreCommand(elevatorSubsystem, elevatorEncoderPosition),
+            new ElevatorRetractCommand(elevatorSubsystem)
+        );
     }
 }

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utils.AutoAlignCommandFactory;
 import frc.robot.utils.PathLoader;
 
+@SuppressWarnings("unused")
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
@@ -25,7 +28,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    // field.setRobotPose(m_robotContainer.driveSubsystem.getPoseEstimator().getPose2d());
     SmartDashboard.putData("Field", field);
     CommandScheduler.getInstance().run();
   }
@@ -78,4 +80,18 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testExit() {}
+
+  @Override
+  public void simulationInit() {
+      Pose2d poseAt = new Pose2d(14.860, 4.205, new Rotation2d());
+      Pose2d nearest = (AutoAlignCommandFactory.getClosestPose(poseAt, true));
+      Field2d field = new Field2d();
+      Field2d field2 = new Field2d();
+
+      field2.setRobotPose(poseAt);
+      field.setRobotPose(nearest);
+
+      SmartDashboard.putData("alignToPose", field);
+      SmartDashboard.putData("atPose", field2);
+  }
 }
