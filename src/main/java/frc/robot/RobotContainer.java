@@ -11,18 +11,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 import frc.robot.commands.FieldDriveCommand;
+import frc.robot.commands.AutoAlign.AutoScoreCommand;
 import frc.robot.commands.ElevatorStates.ElevatorGoToPositionCommand;
 import frc.robot.commands.ElevatorStates.ElevatorHPIntakeCommand;
 import frc.robot.commands.ElevatorStates.ElevatorRetractCommand;
 import frc.robot.commands.ElevatorStates.RetractCoralAfterIntakingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.utils.AutoAlignCommandFactory;
 import frc.robot.utils.PathLoader;
 
 public class RobotContainer { //as of 2/1/2025, we are missing two of our three subsystems. llol!
@@ -31,6 +30,9 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
 
   DriveSubsystem driveSubsystem = new DriveSubsystem();
   ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+
+  Command defaultDriveCommand = new FieldDriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX);
+  Command defaultElevatorCommand = new ElevatorRetractCommand(elevatorSubsystem);
 
   public RobotContainer() {
     configureDefaultBindings();
@@ -44,8 +46,8 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   }
 
   private void configureDefaultBindings() {
-    driveSubsystem.setDefaultCommand(new FieldDriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX));
-    elevatorSubsystem.setDefaultCommand(new ElevatorRetractCommand(elevatorSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    driveSubsystem.setDefaultCommand(defaultDriveCommand);
+    elevatorSubsystem.setDefaultCommand(defaultElevatorCommand);
   }
 
   private void configureElevatorBindings() {
@@ -56,7 +58,12 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     BooleanSupplier runElevatorExtruder = () -> driver.getRightTriggerAxis() > .25;
     l2Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
     l3Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
-    scoreCancel.onTrue(new ElevatorRetractCommand(elevatorSubsystem));
+    scoreCancel.onTrue(defaultElevatorCommand);
+
+    // l2Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
+    // l3Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
+    // scoreCancel.onTrue(defaultElevatorCommand);
+    // scoreCancel.onTrue(defaultDriveCommand);
 
     JoystickButton hpIntakeButton = new JoystickButton(driver, 6);
     hpIntakeButton.toggleOnTrue(new SequentialCommandGroup(
