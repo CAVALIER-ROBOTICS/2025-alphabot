@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.DriveSubsystemConstants;
+import frc.robot.Constants.PathingConstants;
 import frc.robot.utils.CavbotsPoseEstimator;
 import frc.robot.utils.NeoKrakenModule;
 
@@ -51,6 +52,20 @@ public class DriveSubsystem extends SubsystemBase {
     speeds.vyMetersPerSecond *= -1;
     SwerveModuleState[] states = DriveSubsystemConstants.M_KINEMATICS.toSwerveModuleStates(speeds);
     setModuleStates(states);
+  }
+
+  public void driveToPoseWithPID(Pose2d goalPose) { //for autoalign, pathfindToPose should handle rotation. This is for the final .5 meter alignment
+    Pose2d currentPose = poseEstimator.getPose2d();
+    double currentX = currentPose.getX();
+    double currentY = currentPose.getY();
+
+    double goalX = goalPose.getX();
+    double goalY = goalPose.getY();
+
+    double xChassisSpeeds = PathingConstants.X_PRECISE_PATH_PID.calculate(currentX, goalX);
+    double yChassisSpeeds = PathingConstants.Y_PRECISE_PATH_PID.calculate(currentY, goalY);
+
+    drive(new ChassisSpeeds(xChassisSpeeds, yChassisSpeeds, 0.0));
   }
 
   public void setYaw(Rotation2d rot) {

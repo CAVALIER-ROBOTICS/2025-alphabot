@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.pathplanner.lib.path.PathConstraints;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
@@ -36,5 +37,8 @@ public class PathingConstants {
 
     public static final double FIELD_WIDTH_METERS = 17.588;
 
-    public static final double MAX_PRECISE_PATH_ERROR_METERS = 0.01;
+    public static final double MAXIMUM_DISTANCE_FROM_GOAL_METERS = .1;
+
+    public static final PIDController X_PRECISE_PATH_PID = new PIDController(5.0, 0.0, 0.0);
+    public static final PIDController Y_PRECISE_PATH_PID = new PIDController(5.0, 0.0, 0.0);
 }
