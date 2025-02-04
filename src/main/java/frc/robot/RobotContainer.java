@@ -26,7 +26,6 @@ import frc.robot.utils.PathLoader;
 
 public class RobotContainer { //as of 2/1/2025, we are missing two of our three subsystems. llol!
   XboxController driver = new XboxController(0);
-  XboxController operator = new XboxController(1);
 
   DriveSubsystem driveSubsystem = new DriveSubsystem();
   ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -55,11 +54,13 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     POVButton l3Score = new POVButton(driver, 0);
     POVButton scoreCancel = new POVButton(driver, 180);
 
+
     BooleanSupplier runElevatorExtruder = () -> driver.getRightTriggerAxis() > .25;
     l2Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
     l3Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
     scoreCancel.onTrue(defaultElevatorCommand);
 
+    //with autoscoring
     // l2Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
     // l3Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
     // scoreCancel.onTrue(defaultElevatorCommand);

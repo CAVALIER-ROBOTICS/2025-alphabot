@@ -22,11 +22,14 @@ public class ExtendToHeightThenScoreCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("elevator extension has begun");
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Extending elevator");
     elevatorSubsystem.setPosition(positionSetpoint);
 
     double grabberSpeed = (elevatorSubsystem.isElevatorPIDAtSetpoint()) ? ElevatorSubsystemConstants.GRABBER_SPEED: 0;
@@ -36,12 +39,13 @@ public class ExtendToHeightThenScoreCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("It is joever. Interrupted? " + String.valueOf(interrupted) + " " + String.valueOf(elevatorSubsystem.getIsCoralInHoldingPosition()));
     elevatorSubsystem.stopAll();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return elevatorSubsystem.getIsCoralInHoldingPosition();
+    return !elevatorSubsystem.getIsCoralInHoldingPosition();
   }
 }

@@ -35,4 +35,6 @@ public class PathingConstants {
     );
 
     public static final double FIELD_WIDTH_METERS = 17.588;
+
+    public static final double MAX_PRECISE_PATH_ERROR_METERS = 0.01;
 }

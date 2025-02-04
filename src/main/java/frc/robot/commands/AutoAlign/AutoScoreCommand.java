@@ -36,7 +36,8 @@ public class AutoScoreCommand extends Command {
     System.out.println("Ran!");
     Command alignmentCommand = AutoAlignCommandFactory.getAutoAlignAndScoreCommand(
       driveSubsystem.getPoseEstimator().getPose2d(), 
-      elevatorSubsystem, 
+      elevatorSubsystem,
+      driveSubsystem,
       scoringPosition, 
       PathLoader.getShouldFlipPath()
     );

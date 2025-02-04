@@ -4,15 +4,21 @@
 
 package frc.robot.utils;
 
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
+
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -26,7 +32,8 @@ import frc.robot.subsystems.DriveSubsystem;
 /** Add your docs here. */
 public class PathLoader {
     static SendableChooser<String> chooser = new SendableChooser<String>();
-
+    private static Supplier<Pose2d> poseSupplier;
+    
     static String[] validAutonPaths = {
   
     };
@@ -67,9 +74,11 @@ public class PathLoader {
             config = null;
             System.err.println("failed to load path");
         }
-        
+
+        poseSupplier = estimator::getPose2d;
+
         AutoBuilder.configure(
-                estimator::getPose2d, 
+                poseSupplier, 
                 resetPose,
                 driveSub::getRobotRelativeChassisSpeeds,
                 drivelol,
@@ -87,6 +96,21 @@ public class PathLoader {
 
     public static Command pathfindToPose(Pose2d pose) {
         return AutoBuilder.pathfindToPose(pose, PathingConstants.PATHFINDING_CONSTRAINTS);
+    }
+
+    public static Command generateDirectPath(Pose2d goal) { //This Probably Works, should test
+        Pose2d origin = poseSupplier.get();
+        Rotation2d angleOfTravel = Rotation2d.fromDegrees(Math.atan2(goal.getY() - origin.getY(), goal.getX() - origin.getX()));
+
+        List<Waypoint> list = PathPlannerPath.waypointsFromPoses(
+            new Pose2d(origin.getTranslation(), angleOfTravel),
+            new Pose2d(goal.getTranslation(), angleOfTravel)
+        );
+
+        PathPlannerPath path = new PathPlannerPath(list, PathingConstants.PATHFINDING_CONSTRAINTS, null, new GoalEndState(0.0, goal.getRotation()));
+        path.preventFlipping = true;
+
+        return AutoBuilder.followPath(path);
     }
 
     public static void initSendableChooser() {
