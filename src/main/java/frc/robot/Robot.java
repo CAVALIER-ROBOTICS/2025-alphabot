@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utils.AutoAlignCommandFactory;
+import frc.robot.utils.CavbotsPhotonCamera;
+import frc.robot.utils.CavbotsPoseEstimator;
 import frc.robot.utils.PathLoader;
 
 @SuppressWarnings("unused")
@@ -28,6 +30,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    field.setRobotPose(m_robotContainer.driveSubsystem.getPoseEstimator().getPose2d());
     SmartDashboard.putData("Field", field);
     CommandScheduler.getInstance().run();
   }

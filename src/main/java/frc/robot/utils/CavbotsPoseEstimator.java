@@ -12,8 +12,8 @@ public class CavbotsPoseEstimator {
     private SwerveDrivePoseEstimator estimator;
 
     CavbotsPhotonCamera[] localizationCameras = {
-        new CavbotsPhotonCamera(CameraConstants.LOCALIZATION_CAM_ONE_NAME), 
-        new CavbotsPhotonCamera(CameraConstants.LOCALIZATION_CAM_TWO_NAME)
+        new CavbotsPhotonCamera(CameraConstants.LOCALIZATION_CAM_ONE_NAME)
+        // new CavbotsPhotonCamera(CameraConstants.LOCALIZATION_CAM_TWO_NAME)
     };
 
     public CavbotsPoseEstimator(DriveSubsystem driveSubsystem, Pose2d initialPose2d) {
@@ -27,7 +27,10 @@ public class CavbotsPoseEstimator {
     private void tryVisionUpdateWithCamera(CavbotsPhotonCamera c) {
         PoseTimestampPair poseTimestampPair = c.fetchPose();
         if(poseTimestampPair != null) {
+            System.out.println("Added a vision measurement");
             estimator.addVisionMeasurement(poseTimestampPair.pose, poseTimestampPair.latency);
+        } else {
+            // System.out.println("Failed to update with a camera");
         }
     }
 

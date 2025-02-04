@@ -45,6 +45,14 @@ public class DriveSubsystem extends SubsystemBase {
     setModuleStates(states);
   }
 
+  public void autoDrive(ChassisSpeeds speeds) {
+    speeds.omegaRadiansPerSecond *= -1;
+    speeds.vxMetersPerSecond *= -1;
+    speeds.vyMetersPerSecond *= -1;
+    SwerveModuleState[] states = DriveSubsystemConstants.M_KINEMATICS.toSwerveModuleStates(speeds);
+    setModuleStates(states);
+  }
+
   public void setYaw(Rotation2d rot) {
     pigeon.setYaw(rot.getDegrees());
   }

@@ -53,7 +53,7 @@ public class PathLoader {
             estimator.setEstimatorPose2d(pose);
         };
 
-        Consumer<ChassisSpeeds> drivelol = speeds -> driveSub.drive(speeds);
+        Consumer<ChassisSpeeds> drivelol = speeds -> driveSub.autoDrive(speeds);
 
         PPHolonomicDriveController holonomicDriveController = new PPHolonomicDriveController(
             new PIDConstants(5.0),

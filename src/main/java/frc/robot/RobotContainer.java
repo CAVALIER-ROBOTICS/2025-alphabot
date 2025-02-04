@@ -20,36 +20,32 @@ import frc.robot.commands.ElevatorStates.ElevatorGoToPositionCommand;
 import frc.robot.commands.ElevatorStates.ElevatorHPIntakeCommand;
 import frc.robot.commands.ElevatorStates.ElevatorRetractCommand;
 import frc.robot.commands.ElevatorStates.RetractCoralAfterIntakingCommand;
-import frc.robot.commands.IntakeStates.IntakeInCommand;
-import frc.robot.commands.IntakeStates.IntakeOutCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.utils.AutoAlignCommandFactory;
 import frc.robot.utils.PathLoader;
 
 public class RobotContainer { //as of 2/1/2025, we are missing two of our three subsystems. llol!
   XboxController driver = new XboxController(0);
   XboxController operator = new XboxController(1);
 
-  // DriveSubsystem driveSubsystem = new DriveSubsystem();
-  // IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  DriveSubsystem driveSubsystem = new DriveSubsystem();
   ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
   public RobotContainer() {
     configureDefaultBindings();
-    // PathLoader.configureAutoBuilder(driveSubsystem, driveSubsystem.getPoseEstimator());
+    PathLoader.configureAutoBuilder(driveSubsystem, driveSubsystem.getPoseEstimator());
     configureBindings();
   }
 
   private void configureBindings() {
     configureElevatorBindings();
-    // configureDriveBindings();
-    // configureIntakeBindings();
+    configureDriveBindings();
   }
 
   private void configureDefaultBindings() {
-    // driveSubsystem.setDefaultCommand(new FieldDriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX));
-    // intakeSubsystem.setDefaultCommand(new IntakeInCommand(intakeSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    driveSubsystem.setDefaultCommand(new FieldDriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX));
+    elevatorSubsystem.setDefaultCommand(new ElevatorRetractCommand(elevatorSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
   }
 
   private void configureElevatorBindings() {
@@ -69,15 +65,10 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     ));
   }
 
-  // private void configureDriveBindings() {
-  //   JoystickButton zeroDriverGyro = new JoystickButton(driver, 4);
-  //   zeroDriverGyro.onTrue(new InstantCommand(driveSubsystem::driverGyroZero));
-  // }
-
-  // private void configureIntakeBindings() {
-  //   JoystickButton intakeOut = new JoystickButton(driver, 5);
-  //   intakeOut.toggleOnTrue(new IntakeOutCommand(intakeSubsystem));
-  // }
+  private void configureDriveBindings() {
+    JoystickButton zeroDriverGyro = new JoystickButton(driver, 4);
+    zeroDriverGyro.onTrue(new InstantCommand(driveSubsystem::driverGyroZero));
+  }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");

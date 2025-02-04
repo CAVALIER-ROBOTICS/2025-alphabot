@@ -31,11 +31,12 @@ public class CavbotsPhotonCamera {
     }
 
     private PhotonPipelineResult getLatestResult() {
-        var results = camera.getAllUnreadResults();
-        if(results.isEmpty()) {
-            return new PhotonPipelineResult();
-        }
-        return results.get(results.size() - 1);
+        // var results = camera.getAllUnreadResults();
+        // if(results.isEmpty()) {
+        //     return new PhotonPipelineResult();
+        // }
+        // return results.get(0);
+        return camera.getLatestResult();
     }
 
     public Optional<EstimatedRobotPose> getCameraEstimatedPose3d() {
@@ -48,7 +49,7 @@ public class CavbotsPhotonCamera {
         try {
             ret = getCameraEstimatedPose3d().get();
         } catch (NoSuchElementException e) {}
-        if(ret != null && getNumTargets() > 1) {
+        if(ret != null && getNumTargets() > 3) {
             return new PoseTimestampPair(ret.estimatedPose.toPose2d(), ret.timestampSeconds);
         }
         return null;

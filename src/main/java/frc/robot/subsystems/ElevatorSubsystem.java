@@ -30,7 +30,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   RelativeEncoder rightEncoder = primary.getEncoder();
 
-  PIDController pid = new PIDController(0.01, 0, 0);
+  PIDController pid = new PIDController(0.018, 0.003, 0);
 
 
   /** Creates a new ElevatorSubsystem. */
