@@ -4,11 +4,10 @@
 
 package frc.robot.commands.AutoAlign;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.PathingConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -16,9 +15,18 @@ public class FollowPrecisePathCommand extends Command {
   DriveSubsystem driveSubsystem;
   Pose2d goalPose;
 
+  PIDController X_PRECISE_PATH_PID = new PIDController(3.0, 0.0, 0.0);
+  PIDController Y_PRECISE_PATH_PID = new PIDController(3.0, 0.0, 0.0);
+  PIDController ROTATE_PRECISE_PATH_PID = new PIDController(2.0, 0.0, 0.0);
+
   public FollowPrecisePathCommand(DriveSubsystem driveSubsystem, Pose2d goalPose) {
     this.driveSubsystem = driveSubsystem;
     this.goalPose = goalPose;
+
+    X_PRECISE_PATH_PID.setTolerance(.005);
+    Y_PRECISE_PATH_PID.setTolerance(.005);
+    ROTATE_PRECISE_PATH_PID.setTolerance(.1);
+
     addRequirements(driveSubsystem);
   }
 
@@ -29,8 +37,20 @@ public class FollowPrecisePathCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Autoaligning");
-    driveSubsystem.driveToPoseWithPID(goalPose);
+    Pose2d currentPose = driveSubsystem.getPoseEstimator().getPose2d();
+    double currentX = currentPose.getX();
+    double currentY = currentPose.getY();
+    double currentRotRads = currentPose.getRotation().getRadians();
+
+    double goalX = goalPose.getX();
+    double goalY = goalPose.getY();
+    double goalRotRads = goalPose.getRotation().getRadians();
+
+    double xChassisSpeeds = X_PRECISE_PATH_PID.calculate(currentX, goalX);
+    double yChassisSpeeds = Y_PRECISE_PATH_PID.calculate(currentY, goalY);
+    double omegaRads = ROTATE_PRECISE_PATH_PID.calculate(currentRotRads, goalRotRads);
+
+    driveSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(-xChassisSpeeds, -yChassisSpeeds, -omegaRads, currentPose.getRotation()));
   }
 
   // Called once the command ends or is interrupted.
@@ -42,9 +62,7 @@ public class FollowPrecisePathCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    Translation2d goalTranslation = goalPose.getTranslation();
-    Translation2d currentTranslation = driveSubsystem.getPoseEstimator().getPose2d().getTranslation();
-    return (currentTranslation.getDistance(goalTranslation) < PathingConstants.MAXIMUM_DISTANCE_FROM_GOAL_METERS);
+    return (X_PRECISE_PATH_PID.atSetpoint() && Y_PRECISE_PATH_PID.atSetpoint() && ROTATE_PRECISE_PATH_PID.atSetpoint());
     // return true;
   }
 }

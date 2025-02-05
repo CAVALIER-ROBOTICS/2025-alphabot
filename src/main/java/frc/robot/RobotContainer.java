@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.function.BooleanSupplier;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -20,6 +22,7 @@ import frc.robot.commands.ElevatorStates.ElevatorGoToPositionCommand;
 import frc.robot.commands.ElevatorStates.ElevatorHPIntakeCommand;
 import frc.robot.commands.ElevatorStates.ElevatorRetractCommand;
 import frc.robot.commands.ElevatorStates.RetractCoralAfterIntakingCommand;
+import frc.robot.commands.ElevatorStates.AutonomousElevatorCommands.ExtendToHeightThenScoreCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.utils.PathLoader;
@@ -33,7 +36,13 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   Command defaultDriveCommand = new FieldDriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX);
   Command defaultElevatorCommand = new ElevatorRetractCommand(elevatorSubsystem);
 
+  Command intakeCommand = new SequentialCommandGroup(
+    new ElevatorHPIntakeCommand(elevatorSubsystem),
+    new RetractCoralAfterIntakingCommand(elevatorSubsystem).withTimeout(.1)
+  );
+
   public RobotContainer() {
+    configureNamedCommands();
     configureDefaultBindings();
     PathLoader.configureAutoBuilder(driveSubsystem, driveSubsystem.getPoseEstimator());
     configureBindings();
@@ -42,6 +51,12 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   private void configureBindings() {
     configureElevatorBindings();
     configureDriveBindings();
+  }
+
+  private void configureNamedCommands() {
+    NamedCommands.registerCommand("ScoreL3", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
+    NamedCommands.registerCommand("ScoreL2", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
+    NamedCommands.registerCommand("HPIntake", intakeCommand);
   }
 
   private void configureDefaultBindings() {
@@ -67,10 +82,7 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     scoreCancel.onTrue(defaultDriveCommand);
 
     JoystickButton hpIntakeButton = new JoystickButton(driver, 6);
-    hpIntakeButton.toggleOnTrue(new SequentialCommandGroup(
-      new ElevatorHPIntakeCommand(elevatorSubsystem),
-      new RetractCoralAfterIntakingCommand(elevatorSubsystem).withTimeout(.1)
-    ));
+    hpIntakeButton.toggleOnTrue(intakeCommand);
   }
 
   private void configureDriveBindings() {

@@ -9,8 +9,6 @@ import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.PathingConstants;
@@ -27,10 +25,7 @@ public class AutoAlignCommandFactory {
 
     public static void initRedAllianceScoringPositions() {
         for(Pose2d pose: PathingConstants.BLUE_SIDED_SCORING_POSITIONS) {
-            Field2d f = new Field2d();
-            Pose2d poseToAdd = new Pose2d(PathingConstants.FIELD_WIDTH_METERS - pose.getX(), pose.getY(), Rotation2d.fromDegrees(180).minus(pose.getRotation()));
-            f.setRobotPose(poseToAdd);
-            SmartDashboard.putData("redf", f);
+            Pose2d poseToAdd = new Pose2d(PathingConstants.FIELD_WIDTH_METERS - pose.getX(), PathingConstants.FIELD_HEIGHT_METERS - pose.getY(), pose.getRotation().plus(Rotation2d.fromDegrees(180)));
             redAllianceScoringPositions.add(poseToAdd);
         }
     }
@@ -55,7 +50,7 @@ public class AutoAlignCommandFactory {
         Pose2d goalPose = getClosestPose(currentPosition, onRedAlliance);
 
         return new SequentialCommandGroup(
-            new FollowPrecisePathCommand(driveSubsystem, goalPose) //gets us there in a .5 meter circle
+            new FollowPrecisePathCommand(driveSubsystem, goalPose)
         );
     }
 
