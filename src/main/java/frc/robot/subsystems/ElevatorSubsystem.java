@@ -30,7 +30,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   RelativeEncoder rightEncoder = primary.getEncoder();
 
-  PIDController pid = new PIDController(0.018, 0.003, 0);
+  PIDController pid = new PIDController(0.028, 0.002, 0);
 
 
   /** Creates a new ElevatorSubsystem. */
@@ -50,7 +50,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     primary.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     rightEncoder.setPosition(0.0);
-    pid.setTolerance(.2);
+    pid.setTolerance(.5);
   }
 
   public void setSpin(double percent)

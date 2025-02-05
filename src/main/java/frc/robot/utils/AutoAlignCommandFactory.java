@@ -8,9 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.PathingConstants;
+import frc.robot.commands.AutoAlign.FollowPrecisePathCommand;
 import frc.robot.commands.ElevatorStates.ElevatorRetractCommand;
 import frc.robot.commands.ElevatorStates.AutonomousElevatorCommands.ExtendToHeightThenScoreCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -23,7 +27,10 @@ public class AutoAlignCommandFactory {
 
     public static void initRedAllianceScoringPositions() {
         for(Pose2d pose: PathingConstants.BLUE_SIDED_SCORING_POSITIONS) {
-            Pose2d poseToAdd = new Pose2d(PathingConstants.FIELD_WIDTH_METERS - pose.getX(), pose.getY(), pose.getRotation());
+            Field2d f = new Field2d();
+            Pose2d poseToAdd = new Pose2d(PathingConstants.FIELD_WIDTH_METERS - pose.getX(), pose.getY(), Rotation2d.fromDegrees(180).minus(pose.getRotation()));
+            f.setRobotPose(poseToAdd);
+            SmartDashboard.putData("redf", f);
             redAllianceScoringPositions.add(poseToAdd);
         }
     }
@@ -43,20 +50,19 @@ public class AutoAlignCommandFactory {
         return origin.nearest(poseList);
     }
 
-    public static Command getAutoAlignDriveCommand(Pose2d currentPosition, boolean onRedAlliance) {
+    public static Command getAutoAlignDriveCommand(DriveSubsystem driveSubsystem, Pose2d currentPosition, boolean onRedAlliance) {
         checkRedAllianceInitialized();
         Pose2d goalPose = getClosestPose(currentPosition, onRedAlliance);
 
         return new SequentialCommandGroup(
-            PathLoader.pathfindToPose(goalPose), //gets us there in a .5 meter circle
-            PathLoader.generateDirectPath(goalPose).withTimeout(2)
+            new FollowPrecisePathCommand(driveSubsystem, goalPose) //gets us there in a .5 meter circle
         );
     }
 
     public static Command getAutoAlignAndScoreCommand(Pose2d currentPosition, ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double elevatorEncoderPosition, boolean onRedAlliance) {
         return new SequentialCommandGroup(
-            getAutoAlignDriveCommand(currentPosition, onRedAlliance),
-            new ExtendToHeightThenScoreCommand(elevatorSubsystem, elevatorEncoderPosition),
+            getAutoAlignDriveCommand(driveSubsystem, currentPosition, onRedAlliance),
+            new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, elevatorEncoderPosition),
             new ElevatorRetractCommand(elevatorSubsystem)
         );
     }

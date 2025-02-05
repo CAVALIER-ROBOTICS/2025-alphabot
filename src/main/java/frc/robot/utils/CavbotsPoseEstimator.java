@@ -27,7 +27,6 @@ public class CavbotsPoseEstimator {
     private void tryVisionUpdateWithCamera(CavbotsPhotonCamera c) {
         PoseTimestampPair poseTimestampPair = c.fetchPose();
         if(poseTimestampPair != null) {
-            System.out.println("Added a vision measurement");
             estimator.addVisionMeasurement(poseTimestampPair.pose, poseTimestampPair.latency);
         } else {
             // System.out.println("Failed to update with a camera");

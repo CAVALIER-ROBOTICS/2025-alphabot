@@ -6,18 +6,20 @@ package frc.robot.commands.ElevatorStates.AutonomousElevatorCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorSubsystemConstants;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ExtendToHeightThenScoreCommand extends Command {
   ElevatorSubsystem elevatorSubsystem;
   double positionSetpoint;
+  boolean hasReachedSetpoint = false;
 
-  public ExtendToHeightThenScoreCommand(ElevatorSubsystem elevatorSubsystem, double positionSetpoint) {
+  public ExtendToHeightThenScoreCommand(ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double positionSetpoint) {
     this.elevatorSubsystem = elevatorSubsystem;
     this.positionSetpoint = positionSetpoint;
 
-    addRequirements(elevatorSubsystem);
+    addRequirements(elevatorSubsystem, driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -31,8 +33,11 @@ public class ExtendToHeightThenScoreCommand extends Command {
   public void execute() {
     System.out.println("Extending elevator");
     elevatorSubsystem.setPosition(positionSetpoint);
-
-    double grabberSpeed = (elevatorSubsystem.isElevatorPIDAtSetpoint()) ? ElevatorSubsystemConstants.GRABBER_SPEED: 0;
+    double grabberSpeed = 0.0;
+    if(elevatorSubsystem.isElevatorPIDAtSetpoint() || hasReachedSetpoint) {
+      hasReachedSetpoint = true;
+      grabberSpeed = ElevatorSubsystemConstants.GRABBER_SPEED;
+    }
     elevatorSubsystem.setGrabber(grabberSpeed);
   }
 
@@ -46,6 +51,7 @@ public class ExtendToHeightThenScoreCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !elevatorSubsystem.getIsCoralInHoldingPosition();
+    // return !elevatorSubsystem.getIsCoralInHoldingPosition();
+    return false;
   }
 }

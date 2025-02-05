@@ -23,7 +23,6 @@ public class ElevatorRetractCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("I am retracting, gamer");
     elevatorSubsystem.setPosition(ElevatorSubsystemConstants.DEFAULT_POSITION);
   }
 

@@ -58,14 +58,17 @@ public class DriveSubsystem extends SubsystemBase {
     Pose2d currentPose = poseEstimator.getPose2d();
     double currentX = currentPose.getX();
     double currentY = currentPose.getY();
+    double currentRotRads = currentPose.getRotation().getRadians();
 
     double goalX = goalPose.getX();
     double goalY = goalPose.getY();
+    double goalRotRads = goalPose.getRotation().getRadians();
 
     double xChassisSpeeds = PathingConstants.X_PRECISE_PATH_PID.calculate(currentX, goalX);
     double yChassisSpeeds = PathingConstants.Y_PRECISE_PATH_PID.calculate(currentY, goalY);
+    double omegaRads = PathingConstants.ROTATE_PRECISE_PATH_PID.calculate(currentRotRads, goalRotRads);
 
-    drive(new ChassisSpeeds(xChassisSpeeds, yChassisSpeeds, 0.0));
+    drive(ChassisSpeeds.fromFieldRelativeSpeeds(-xChassisSpeeds, -yChassisSpeeds, -omegaRads, goalPose.getRotation()));
   }
 
   public void setYaw(Rotation2d rot) {

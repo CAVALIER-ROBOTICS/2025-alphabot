@@ -22,7 +22,7 @@ public class CavbotsPhotonCamera {
     PhotonCamera camera;
     PhotonPoseEstimator estimator;
 
-    Transform3d cameraInBotSpace = new Transform3d(new Translation3d(0.127, 0, 0.65), new Rotation3d(0, -Math.PI / 12, Math.PI));
+    Transform3d cameraInBotSpace = new Transform3d(new Translation3d(0.3, 0.08255, 0.08), new Rotation3d(0, Math.toRadians(5), 0.0));
     AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
     public CavbotsPhotonCamera(String camName) {
@@ -49,7 +49,7 @@ public class CavbotsPhotonCamera {
         try {
             ret = getCameraEstimatedPose3d().get();
         } catch (NoSuchElementException e) {}
-        if(ret != null && getNumTargets() > 3) {
+        if(ret != null && getNumTargets() >= 1) {
             return new PoseTimestampPair(ret.estimatedPose.toPose2d(), ret.timestampSeconds);
         }
         return null;

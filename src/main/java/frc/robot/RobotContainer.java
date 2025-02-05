@@ -55,16 +55,16 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     POVButton scoreCancel = new POVButton(driver, 180);
 
 
-    BooleanSupplier runElevatorExtruder = () -> driver.getRightTriggerAxis() > .25;
-    l2Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
-    l3Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
-    scoreCancel.onTrue(defaultElevatorCommand);
+    // BooleanSupplier runElevatorExtruder = () -> driver.getRightTriggerAxis() > .25;
+    // l2Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
+    // l3Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
+    // scoreCancel.onTrue(defaultElevatorCommand);
 
     //with autoscoring
-    // l2Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
-    // l3Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
-    // scoreCancel.onTrue(defaultElevatorCommand);
-    // scoreCancel.onTrue(defaultDriveCommand);
+    l2Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
+    l3Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
+    scoreCancel.onTrue(defaultElevatorCommand);
+    scoreCancel.onTrue(defaultDriveCommand);
 
     JoystickButton hpIntakeButton = new JoystickButton(driver, 6);
     hpIntakeButton.toggleOnTrue(new SequentialCommandGroup(

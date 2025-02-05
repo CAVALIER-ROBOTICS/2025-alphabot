@@ -6,6 +6,7 @@ package frc.robot.commands.AutoAlign;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.PathingConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -17,6 +18,7 @@ public class FollowPrecisePathCommand extends Command {
 
   public FollowPrecisePathCommand(DriveSubsystem driveSubsystem, Pose2d goalPose) {
     this.driveSubsystem = driveSubsystem;
+    this.goalPose = goalPose;
     addRequirements(driveSubsystem);
   }
 
@@ -27,13 +29,14 @@ public class FollowPrecisePathCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Autoaligning");
     driveSubsystem.driveToPoseWithPID(goalPose);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("Reached pose");
+    driveSubsystem.drive(new ChassisSpeeds(0, 0, 0));
   }
 
   // Returns true when the command should end.
@@ -42,5 +45,6 @@ public class FollowPrecisePathCommand extends Command {
     Translation2d goalTranslation = goalPose.getTranslation();
     Translation2d currentTranslation = driveSubsystem.getPoseEstimator().getPose2d().getTranslation();
     return (currentTranslation.getDistance(goalTranslation) < PathingConstants.MAXIMUM_DISTANCE_FROM_GOAL_METERS);
+    // return true;
   }
 }
