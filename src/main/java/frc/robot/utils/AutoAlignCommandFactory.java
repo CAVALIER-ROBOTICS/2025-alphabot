@@ -21,24 +21,49 @@ import frc.robot.subsystems.ElevatorSubsystem;
 /** Add your docs here. */
 public class AutoAlignCommandFactory {
     static List<Pose2d> redAllianceScoringPositions = new ArrayList<>();
-    static boolean redAllianceScoringPositionsInitialized = false;
+    static List<Pose2d> blueAllianceScoringPositions = new ArrayList<>();
+
+    static boolean initialized = false;
 
     public static void initRedAllianceScoringPositions() {
-        for(Pose2d pose: PathingConstants.BLUE_SIDED_SCORING_POSITIONS) {
+        for(Pose2d pose: blueAllianceScoringPositions) {
             Pose2d poseToAdd = new Pose2d(PathingConstants.FIELD_WIDTH_METERS - pose.getX(), PathingConstants.FIELD_HEIGHT_METERS - pose.getY(), pose.getRotation().plus(Rotation2d.fromDegrees(180)));
             redAllianceScoringPositions.add(poseToAdd);
         }
     }
 
-    private static void checkRedAllianceInitialized() {
-        if(!redAllianceScoringPositionsInitialized) {
-            redAllianceScoringPositionsInitialized = true;
+    public static void applyXYOffsetsToBlueAlliance(double x, double y) {
+        List<Pose2d> originalPoseList = PathingConstants.BLUE_SIDED_SCORING_POSITIONS;
+        for(int i = 0; i < PathingConstants.BLUE_SIDED_SCORING_POSITIONS.size(); i++) {
+            // Field2d field = new Field2d();
+            Pose2d originalPose = originalPoseList.get(i);
+            double offset = Math.atan2(x, y);
+            double magOffset = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+            double poseOrientationRadians = originalPose.getRotation().getRadians();
+
+            double newX = originalPose.getX() + ((Math.cos(poseOrientationRadians + offset) * magOffset));
+            double newY = originalPose.getY() + ((Math.sin(poseOrientationRadians + offset) * magOffset));
+
+            Pose2d np = new Pose2d(newX, newY, originalPose.getRotation());
+
+            // field.setRobotPose(np);
+            // SmartDashboard.putData(String.valueOf(i), field);
+
+            blueAllianceScoringPositions.add(np);
+        }
+    }
+
+    private static void initalize() {
+        if(!initialized) {
+            initialized = true;
+            applyXYOffsetsToBlueAlliance(PathingConstants.X_OFFSET, PathingConstants.Y_OFFSET);
             initRedAllianceScoringPositions();
         }
     }
 
     public static Pose2d getClosestPose(Pose2d origin, boolean onRedAlliance) {
-        List<Pose2d> poseList = PathingConstants.BLUE_SIDED_SCORING_POSITIONS;
+        initalize();
+        List<Pose2d> poseList = blueAllianceScoringPositions;
         if(onRedAlliance) {
             poseList = redAllianceScoringPositions;
         }
@@ -46,7 +71,7 @@ public class AutoAlignCommandFactory {
     }
 
     public static Command getAutoAlignDriveCommand(DriveSubsystem driveSubsystem, Pose2d currentPosition, boolean onRedAlliance) {
-        checkRedAllianceInitialized();
+        initalize();
         Pose2d goalPose = getClosestPose(currentPosition, onRedAlliance);
 
         return new SequentialCommandGroup(

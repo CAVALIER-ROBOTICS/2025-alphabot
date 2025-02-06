@@ -7,6 +7,8 @@ package frc.robot.commands.AutoAlign;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -19,6 +21,8 @@ public class FollowPrecisePathCommand extends Command {
   PIDController Y_PRECISE_PATH_PID = new PIDController(3.0, 0.0, 0.0);
   PIDController ROTATE_PRECISE_PATH_PID = new PIDController(2.0, 0.0, 0.0);
 
+  Field2d setpointField = new Field2d();
+
   public FollowPrecisePathCommand(DriveSubsystem driveSubsystem, Pose2d goalPose) {
     this.driveSubsystem = driveSubsystem;
     this.goalPose = goalPose;
@@ -26,6 +30,10 @@ public class FollowPrecisePathCommand extends Command {
     X_PRECISE_PATH_PID.setTolerance(.005);
     Y_PRECISE_PATH_PID.setTolerance(.005);
     ROTATE_PRECISE_PATH_PID.setTolerance(.1);
+
+    ROTATE_PRECISE_PATH_PID.enableContinuousInput(0, Math.PI * 2);
+
+    SmartDashboard.putData("spfield", setpointField);
 
     addRequirements(driveSubsystem);
   }
@@ -51,6 +59,7 @@ public class FollowPrecisePathCommand extends Command {
     double omegaRads = ROTATE_PRECISE_PATH_PID.calculate(currentRotRads, goalRotRads);
 
     driveSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(-xChassisSpeeds, -yChassisSpeeds, -omegaRads, currentPose.getRotation()));
+    setpointField.setRobotPose(goalPose);
   }
 
   // Called once the command ends or is interrupted.

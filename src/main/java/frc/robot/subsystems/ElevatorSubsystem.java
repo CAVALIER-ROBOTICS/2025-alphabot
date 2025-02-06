@@ -50,7 +50,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     primary.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     rightEncoder.setPosition(0.0);
-    pid.setTolerance(.5);
+    pid.setTolerance(1);
   }
 
   public void setSpin(double percent)
