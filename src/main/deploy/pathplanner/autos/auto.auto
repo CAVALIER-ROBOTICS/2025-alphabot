@@ -15,6 +15,18 @@
           "data": {
             "name": "ScoreL2"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "p2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HPIntake"
+          }
         }
       ]
     }

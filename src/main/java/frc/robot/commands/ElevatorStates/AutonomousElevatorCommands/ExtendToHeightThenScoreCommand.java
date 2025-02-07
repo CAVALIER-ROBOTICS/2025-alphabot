@@ -34,7 +34,7 @@ public class ExtendToHeightThenScoreCommand extends Command {
     System.out.println("Extending elevator");
     elevatorSubsystem.setPosition(positionSetpoint);
     double grabberSpeed = 0.0;
-    if(elevatorSubsystem.isElevatorPIDAtSetpoint() || hasReachedSetpoint) {
+    if(elevatorSubsystem.isElevatorPIDAtSetpoint()) {
       hasReachedSetpoint = true;
       grabberSpeed = ElevatorSubsystemConstants.GRABBER_SPEED;
     }

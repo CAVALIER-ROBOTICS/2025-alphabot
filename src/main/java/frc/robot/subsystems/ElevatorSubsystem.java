@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorSubsystemConstants;
+import frc.robot.Constants.RobotConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
@@ -30,23 +31,26 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   RelativeEncoder rightEncoder = primary.getEncoder();
 
-  PIDController pid = new PIDController(0.028, 0.002, 0);
+  PIDController pid = new PIDController(0.03, 0.0012, 0);
 
 
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
     SparkMaxConfig smc = new SparkMaxConfig();
     smc.follow(primary, false);
+    smc.voltageCompensation(RobotConstants.NOMINAL_VOLTAGE);
     secondary.configure(smc, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SparkMaxConfig neoConfig = new SparkMaxConfig();
     neoConfig.smartCurrentLimit(ElevatorSubsystemConstants.NEO550_CURRENT_LIMIT);
     neoConfig.inverted(true);
     neoConfig.idleMode(IdleMode.kBrake);
+    neoConfig.voltageCompensation(RobotConstants.NOMINAL_VOLTAGE);
     spinGrabber.configure(neoConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SparkMaxConfig primaryConfig = new SparkMaxConfig();
     primaryConfig.encoder.positionConversionFactor(1.0);
+    primaryConfig.voltageCompensation(RobotConstants.NOMINAL_VOLTAGE);
     primary.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     rightEncoder.setPosition(0.0);
@@ -74,6 +78,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     setSpin(speed);
   }
 
+  public void zeroEncoder() {
+    rightEncoder.setPosition(0.0);
+  }
+
   public void stopAll() {
     setSpin(0.0);
     setGrabber(0.0);    
@@ -87,9 +95,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     return pid.atSetpoint();
   }
 
+  public double getElevatorCurrentDraw() {
+    return primary.getOutputCurrent();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ElevatorPos",getPosition());
+    SmartDashboard.putNumber("CurrentDrawElevator", getElevatorCurrentDraw());
   }
 }

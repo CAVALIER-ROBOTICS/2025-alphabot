@@ -27,9 +27,9 @@ public class FollowPrecisePathCommand extends Command {
     this.driveSubsystem = driveSubsystem;
     this.goalPose = goalPose;
 
-    X_PRECISE_PATH_PID.setTolerance(.005);
-    Y_PRECISE_PATH_PID.setTolerance(.005);
-    ROTATE_PRECISE_PATH_PID.setTolerance(.1);
+    X_PRECISE_PATH_PID.setTolerance(.01);
+    Y_PRECISE_PATH_PID.setTolerance(.01);
+    ROTATE_PRECISE_PATH_PID.setTolerance(.2);
 
     ROTATE_PRECISE_PATH_PID.enableContinuousInput(0, Math.PI * 2);
 

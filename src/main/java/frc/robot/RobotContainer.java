@@ -21,6 +21,7 @@ import frc.robot.commands.AutoAlign.AutoScoreCommand;
 import frc.robot.commands.ElevatorStates.ElevatorGoToPositionCommand;
 import frc.robot.commands.ElevatorStates.ElevatorHPIntakeCommand;
 import frc.robot.commands.ElevatorStates.ElevatorRetractCommand;
+import frc.robot.commands.ElevatorStates.ElevatorReturnToHomeAndZeroCommand;
 import frc.robot.commands.ElevatorStates.RetractCoralAfterIntakingCommand;
 import frc.robot.commands.ElevatorStates.AutonomousElevatorCommands.ExtendToHeightThenScoreCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -55,7 +56,9 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
 
   private void configureNamedCommands() {
     NamedCommands.registerCommand("ScoreL3", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
-    NamedCommands.registerCommand("ScoreL2", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
+    NamedCommands.registerCommand("ScoreL2", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION).withTimeout(2));
+    NamedCommands.registerCommand("testl2", new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
+
     NamedCommands.registerCommand("HPIntake", intakeCommand);
   }
 
@@ -78,7 +81,7 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     //with autoscoring
     l2Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
     l3Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
-    scoreCancel.onTrue(defaultElevatorCommand);
+    scoreCancel.onTrue(new ElevatorReturnToHomeAndZeroCommand(elevatorSubsystem));
     scoreCancel.onTrue(defaultDriveCommand);
 
     JoystickButton hpIntakeButton = new JoystickButton(driver, 6);
