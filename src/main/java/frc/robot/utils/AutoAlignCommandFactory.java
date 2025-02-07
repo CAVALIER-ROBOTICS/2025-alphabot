@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.PathingConstants;
 import frc.robot.commands.AutoAlign.FollowPrecisePathCommand;
-import frc.robot.commands.ElevatorStates.ElevatorReturnToHomeAndZeroCommand;
 import frc.robot.commands.ElevatorStates.AutonomousElevatorCommands.ExtendToHeightThenScoreCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -82,8 +81,7 @@ public class AutoAlignCommandFactory {
     public static Command getAutoAlignAndScoreCommand(Pose2d currentPosition, ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double elevatorEncoderPosition, boolean onRedAlliance) {
         return new SequentialCommandGroup(
             getAutoAlignDriveCommand(driveSubsystem, currentPosition, onRedAlliance),
-            new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, elevatorEncoderPosition),
-            new ElevatorReturnToHomeAndZeroCommand(elevatorSubsystem)
+            new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, elevatorEncoderPosition)
         );
     }
 }
