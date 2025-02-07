@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
-    AutoAlignCommandFactory.initRedAllianceScoringPositions();
+    AutoAlignCommandFactory.initalize();
   }
 
   @Override
@@ -86,15 +86,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationInit() {
-      Pose2d poseAt = new Pose2d(14.860, 4.205, new Rotation2d());
-      Pose2d nearest = (AutoAlignCommandFactory.getClosestPose(poseAt, true));
-      Field2d field = new Field2d();
-      Field2d field2 = new Field2d();
+    AutoAlignCommandFactory.initalize();
+    Pose2d poseAt = new Pose2d(14.860, 4.205, new Rotation2d());
+    Pose2d nearest = (AutoAlignCommandFactory.getClosestPose(poseAt, true, true));
+    Field2d field = new Field2d();
+    Field2d field2 = new Field2d();
 
-      field2.setRobotPose(poseAt);
-      field.setRobotPose(nearest);
+    field2.setRobotPose(poseAt);
+    field.setRobotPose(nearest);
 
-      SmartDashboard.putData("alignToPose", field);
-      SmartDashboard.putData("atPose", field2);
+    SmartDashboard.putData("alignToPose", field);
+    SmartDashboard.putData("atPose", field2);
   }
+
+  @Override
+  public void simulationPeriodic() {}
 }

@@ -4,6 +4,8 @@
 
 package frc.robot.commands.AutoAlign;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -14,11 +16,14 @@ import frc.robot.utils.PathLoader;
 public class AutoScoreCommand extends Command {
   DriveSubsystem driveSubsystem;
   ElevatorSubsystem elevatorSubsystem;
+  BooleanSupplier onLeftSide;
   double scoringPosition;
-  public AutoScoreCommand(DriveSubsystem driveSubsystem, ElevatorSubsystem elevatorSubsystem, double scoringPosition) {
+
+  public AutoScoreCommand(DriveSubsystem driveSubsystem, ElevatorSubsystem elevatorSubsystem, double scoringPosition, BooleanSupplier onLeftSide) {
     this.driveSubsystem = driveSubsystem;
     this.elevatorSubsystem = elevatorSubsystem;
     this.scoringPosition = scoringPosition;
+    this.onLeftSide = onLeftSide;
     addRequirements(driveSubsystem, elevatorSubsystem);
   }
 
@@ -39,7 +44,8 @@ public class AutoScoreCommand extends Command {
       elevatorSubsystem,
       driveSubsystem,
       scoringPosition, 
-      PathLoader.getShouldFlipPath()
+      PathLoader.getShouldFlipPath(),
+      onLeftSide.getAsBoolean()
     );
     
     alignmentCommand.schedule();

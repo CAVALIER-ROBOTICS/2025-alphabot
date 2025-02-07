@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
-
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -42,6 +40,8 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     new RetractCoralAfterIntakingCommand(elevatorSubsystem).withTimeout(.1)
   );
 
+  boolean scoringOnLeft = true;
+
   public RobotContainer() {
     configureNamedCommands();
     configureDefaultBindings();
@@ -52,12 +52,12 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   private void configureBindings() {
     configureElevatorBindings();
     configureDriveBindings();
+    configureSideSelectorBindings();
   }
 
   private void configureNamedCommands() {
     NamedCommands.registerCommand("ScoreL3", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
     NamedCommands.registerCommand("ScoreL2", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION).withTimeout(2));
-    NamedCommands.registerCommand("testl2", new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
 
     NamedCommands.registerCommand("HPIntake", intakeCommand);
   }
@@ -79,8 +79,8 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     // scoreCancel.onTrue(defaultElevatorCommand);
 
     //with autoscoring
-    l2Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
-    l3Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
+    l2Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION, () -> getOnLeftSide()));
+    l3Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION, () -> getOnLeftSide()));
     scoreCancel.onTrue(new ElevatorReturnToHomeAndZeroCommand(elevatorSubsystem));
     scoreCancel.onTrue(defaultDriveCommand);
 
@@ -93,6 +93,20 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     zeroDriverGyro.onTrue(new InstantCommand(driveSubsystem::driverGyroZero));
   }
 
+  private void configureSideSelectorBindings() {
+    JoystickButton leftSelector = new JoystickButton(driver, 3);
+    JoystickButton rightSelector = new JoystickButton(driver, 2);
+
+    leftSelector.onTrue(new InstantCommand(() -> {
+      System.out.println("Left selector pressed");
+      scoringOnLeft = true;
+    }));
+    rightSelector.onTrue(new InstantCommand(() -> {scoringOnLeft = false;}));
+  }
+
+  public boolean getOnLeftSide() {
+    return scoringOnLeft;
+  }
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
   }
