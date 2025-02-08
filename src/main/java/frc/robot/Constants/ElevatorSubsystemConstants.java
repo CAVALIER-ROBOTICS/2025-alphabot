@@ -24,4 +24,8 @@ public class ElevatorSubsystemConstants
     public static final double INTAKE_GRABBER_SPEED = 0.4;
 
     public static final double HOMED_CURRENT_DRAW = 75.0;
+
+    public static final double MAX_ACCELERATION = .25;
+    public static final double MAX_VELOCITY = .5;
+
 }

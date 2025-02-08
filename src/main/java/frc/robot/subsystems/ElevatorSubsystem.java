@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -33,6 +34,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   PIDController pid = new PIDController(0.03, 0.0012, 0);
 
+  SparkClosedLoopController onboardClosedLoop = primary.getClosedLoopController();
 
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
@@ -40,7 +42,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     smc.follow(primary, false);
     smc.voltageCompensation(RobotConstants.NOMINAL_VOLTAGE);
     secondary.configure(smc, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
+    
     SparkMaxConfig neoConfig = new SparkMaxConfig();
     neoConfig.smartCurrentLimit(ElevatorSubsystemConstants.NEO550_CURRENT_LIMIT);
     neoConfig.inverted(true);
@@ -51,6 +53,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     SparkMaxConfig primaryConfig = new SparkMaxConfig();
     primaryConfig.encoder.positionConversionFactor(1.0);
     primaryConfig.voltageCompensation(RobotConstants.NOMINAL_VOLTAGE);
+
+    primaryConfig.closedLoop.pid(0.03, 0.0012, 0);
+    primaryConfig.closedLoop.maxMotion
+      .maxAcceleration(ElevatorSubsystemConstants.MAX_ACCELERATION)
+      .maxVelocity(ElevatorSubsystemConstants.MAX_VELOCITY)
+      .allowedClosedLoopError(1);
+
     primary.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     rightEncoder.setPosition(0.0);
