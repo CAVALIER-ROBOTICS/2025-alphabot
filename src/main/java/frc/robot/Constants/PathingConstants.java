@@ -32,8 +32,8 @@ public class PathingConstants {
         new Pose2d(5.154, 5.167, Rotation2d.fromDegrees(240))
     );
 
-    public static final List<Pose2d> RIGHT_BLUE_SIDED_SCORING_POSITIONS = Arrays.asList( //gotta mirror em
-        new Pose2d(3.826, 5.174, Rotation2d.fromDegrees(-60)),
+    public static final List<Pose2d> LEFT_BLUE_SIDED_SCORING_POSITIONS = Arrays.asList( //gotta mirror em
+        new Pose2d(4.108, 5.335, Rotation2d.fromDegrees(-60)),
         new Pose2d(3.163, 4.356, Rotation2d.fromDegrees(0.0)),
         new Pose2d(3.533, 3.047, Rotation2d.fromDegrees(60)),
         new Pose2d(4.858, 2.711, Rotation2d.fromDegrees(120)),
@@ -41,8 +41,8 @@ public class PathingConstants {
         new Pose2d(5.438, 5.007, Rotation2d.fromDegrees(240))
     );
 
-    public static final List<Pose2d> LEFT_BLUE_SIDED_SCORING_POSITIONS = Arrays.asList( //gotta mirror em
-        new Pose2d(4.108, 5.335, Rotation2d.fromDegrees(-60)),
+    public static final List<Pose2d> RIGHT_BLUE_SIDED_SCORING_POSITIONS = Arrays.asList( //gotta mirror em
+        new Pose2d(3.826, 5.174, Rotation2d.fromDegrees(-60)),
         new Pose2d(3.163, 4.031, Rotation2d.fromDegrees(0.0)),
         new Pose2d(3.821, 2.879, Rotation2d.fromDegrees(60)),
         new Pose2d(5.144, 2.879, Rotation2d.fromDegrees(120)),

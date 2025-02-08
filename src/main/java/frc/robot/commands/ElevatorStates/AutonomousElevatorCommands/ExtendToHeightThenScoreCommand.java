@@ -4,6 +4,7 @@
 
 package frc.robot.commands.ElevatorStates.AutonomousElevatorCommands;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -12,11 +13,14 @@ import frc.robot.subsystems.ElevatorSubsystem;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ExtendToHeightThenScoreCommand extends Command {
   ElevatorSubsystem elevatorSubsystem;
+  DriveSubsystem driveSubsystem;
+
   double positionSetpoint;
   boolean hasReachedSetpoint = false;
 
   public ExtendToHeightThenScoreCommand(ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double positionSetpoint) {
     this.elevatorSubsystem = elevatorSubsystem;
+    this.driveSubsystem = driveSubsystem;
     this.positionSetpoint = positionSetpoint;
 
     addRequirements(elevatorSubsystem, driveSubsystem);
@@ -31,7 +35,6 @@ public class ExtendToHeightThenScoreCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Extending elevator");
     elevatorSubsystem.setPosition(positionSetpoint);
     double grabberSpeed = 0.0;
     if(elevatorSubsystem.isElevatorPIDAtSetpoint()) {
@@ -39,6 +42,8 @@ public class ExtendToHeightThenScoreCommand extends Command {
       grabberSpeed = ElevatorSubsystemConstants.GRABBER_SPEED;
     }
     elevatorSubsystem.setGrabber(grabberSpeed);
+
+    driveSubsystem.drive(new ChassisSpeeds());
   }
 
   // Called once the command ends or is interrupted.

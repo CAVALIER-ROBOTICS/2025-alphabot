@@ -27,6 +27,18 @@
           "data": {
             "name": "HPIntake"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "p3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreL2"
+          }
         }
       ]
     }
