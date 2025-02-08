@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -57,7 +59,7 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
 
   private void configureNamedCommands() {
     NamedCommands.registerCommand("ScoreL3", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
-    NamedCommands.registerCommand("ScoreL2", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION).withTimeout(2));
+    NamedCommands.registerCommand("ScoreL2", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION).withTimeout(1));
 
     NamedCommands.registerCommand("HPIntake", intakeCommand);
   }
@@ -76,7 +78,7 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     // BooleanSupplier runElevatorExtruder = () -> driver.getRightTriggerAxis() > .25;
     // l2Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
     // l3Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
-    // scoreCancel.onTrue(defaultElevatorCommand);
+    // scoreCancel.onTrue(new ElevatorReturnToHomeAndZeroCommand(elevatorSubsystem));
 
     //with autoscoring
     l2Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION, () -> getOnLeftSide()));

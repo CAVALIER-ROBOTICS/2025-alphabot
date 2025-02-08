@@ -39,6 +39,30 @@
           "data": {
             "name": "ScoreL2"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "p4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HPIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "p5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreL2"
+          }
         }
       ]
     }

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.752151639344262,
-        "y": 4.942059426229508
+        "x": 5.274590163934427,
+        "y": 5.121874999995433
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0778028948354805,
-        "y": 5.706092189896174
+        "x": 4.483401639344263,
+        "y": 6.0449282786885234
       },
       "isLocked": false,
       "linkedName": "bruh"
     },
     {
       "anchor": {
-        "x": 1.1388319672131146,
-        "y": 7.123821721311475
+        "x": 1.6423155737704918,
+        "y": 7.411526639344262
       },
       "prevControl": {
-        "x": 1.9455668217245203,
-        "y": 6.153451265815235
+        "x": 2.0480962582601205,
+        "y": 7.021511351927965
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -60.94539590066549
+    "rotation": -117.18111108547718
   },
   "useDefaultConstraints": true
 }

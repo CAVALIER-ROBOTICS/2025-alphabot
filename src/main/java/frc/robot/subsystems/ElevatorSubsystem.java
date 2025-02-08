@@ -6,15 +6,17 @@ package frc.robot.subsystems;
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -32,9 +34,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   RelativeEncoder rightEncoder = primary.getEncoder();
 
-  PIDController pid = new PIDController(0.03, 0.0012, 0);
-
   SparkClosedLoopController onboardClosedLoop = primary.getClosedLoopController();
+
+  double currentSetpoint = 0.0;
+
+  // ElevatorFeedforward eff = new ElevatorFeedforward(getElevatorCurrentDraw(), getPosition(), getElevatorCurrentDraw())
 
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
@@ -54,16 +58,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     primaryConfig.encoder.positionConversionFactor(1.0);
     primaryConfig.voltageCompensation(RobotConstants.NOMINAL_VOLTAGE);
 
-    primaryConfig.closedLoop.pid(0.03, 0.0012, 0);
+    primaryConfig.closedLoop.pid(.2, 0.0, 0.0);
     primaryConfig.closedLoop.maxMotion
       .maxAcceleration(ElevatorSubsystemConstants.MAX_ACCELERATION)
       .maxVelocity(ElevatorSubsystemConstants.MAX_VELOCITY)
-      .allowedClosedLoopError(1);
-
+      .allowedClosedLoopError(0.5);
     primary.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     rightEncoder.setPosition(0.0);
-    pid.setTolerance(1);
   }
 
   public void setSpin(double percent)
@@ -81,10 +83,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     return rightEncoder.getPosition();
   }
 
-  public void setPosition(double position)
-  {
-    double speed = pid.calculate(getPosition(), position);
-    setSpin(speed);
+  public void setPosition(double position) {
+    currentSetpoint = position;
+    onboardClosedLoop.setReference(position, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, .02, ArbFFUnits.kPercentOut);
   }
 
   public void zeroEncoder() {
@@ -101,7 +102,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public boolean isElevatorPIDAtSetpoint() {
-    return pid.atSetpoint();
+    return Math.abs(getPosition() - currentSetpoint) < ElevatorSubsystemConstants.AT_SETPOINT_TOLERANCE;
   }
 
   public double getElevatorCurrentDraw() {
