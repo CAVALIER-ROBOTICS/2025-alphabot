@@ -73,6 +73,7 @@ public class NeoKrakenModule {
         c.inverted(false);
         c.voltageCompensation(NOMINAL_VOLTAGE);
         c.idleMode(IdleMode.kBrake);
+        c.smartCurrentLimit(80);
         target.configure(c, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     }
 
