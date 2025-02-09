@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
-
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.XboxController;
