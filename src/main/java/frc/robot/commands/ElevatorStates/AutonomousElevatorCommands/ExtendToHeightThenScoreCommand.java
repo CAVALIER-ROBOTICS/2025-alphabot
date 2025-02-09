@@ -18,10 +18,21 @@ public class ExtendToHeightThenScoreCommand extends Command {
   double positionSetpoint;
   boolean hasReachedSetpoint = false;
 
+  double grabberSpinSpeed = ElevatorSubsystemConstants.GRABBER_SPEED;
+
   public ExtendToHeightThenScoreCommand(ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double positionSetpoint) {
     this.elevatorSubsystem = elevatorSubsystem;
     this.driveSubsystem = driveSubsystem;
     this.positionSetpoint = positionSetpoint;
+
+    addRequirements(elevatorSubsystem, driveSubsystem);
+  }
+
+  public ExtendToHeightThenScoreCommand(ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double positionSetpoint, double grabberSpeed) {
+    this.elevatorSubsystem = elevatorSubsystem;
+    this.driveSubsystem = driveSubsystem;
+    this.positionSetpoint = positionSetpoint;
+    this.grabberSpinSpeed = grabberSpeed;
 
     addRequirements(elevatorSubsystem, driveSubsystem);
   }
@@ -39,7 +50,7 @@ public class ExtendToHeightThenScoreCommand extends Command {
     double grabberSpeed = 0.0;
     if(elevatorSubsystem.isElevatorPIDAtSetpoint()) {
       hasReachedSetpoint = true;
-      grabberSpeed = ElevatorSubsystemConstants.GRABBER_SPEED;
+      grabberSpeed = grabberSpinSpeed;
     }
     elevatorSubsystem.setGrabber(grabberSpeed);
 

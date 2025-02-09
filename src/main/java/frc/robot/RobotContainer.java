@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -40,6 +42,11 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     new RetractCoralAfterIntakingCommand(elevatorSubsystem).withTimeout(.1)
   );
 
+  Command zeroElevatorAndIntakeCommand = new SequentialCommandGroup(
+    new ElevatorReturnToHomeAndZeroCommand(elevatorSubsystem),
+    intakeCommand
+  );
+
   boolean scoringOnLeft = true;
 
   public RobotContainer() {
@@ -56,7 +63,7 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   }
 
   private void configureNamedCommands() {
-    NamedCommands.registerCommand("ScoreL3", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION));
+    NamedCommands.registerCommand("ScoreL3", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION).withTimeout(1.5));
     NamedCommands.registerCommand("ScoreL2", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION).withTimeout(1));
 
     NamedCommands.registerCommand("HPIntake", intakeCommand);
@@ -68,10 +75,9 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   }
 
   private void configureElevatorBindings() {
+    POVButton l1Score = new POVButton(driver, 180);
     POVButton l2Score = new POVButton(driver, 90);
     POVButton l3Score = new POVButton(driver, 0);
-    POVButton scoreCancel = new POVButton(driver, 180);
-
 
     // BooleanSupplier runElevatorExtruder = () -> driver.getRightTriggerAxis() > .25;
     // l2Score.onTrue(new ElevatorGoToPositionCommand(elevatorSubsystem, runElevatorExtruder, ElevatorSubsystemConstants.L2_ENCODER_POSITION));
@@ -79,13 +85,13 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     // scoreCancel.onTrue(new ElevatorReturnToHomeAndZeroCommand(elevatorSubsystem));
 
     //with autoscoring
-    l2Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION, () -> getOnLeftSide()));
-    l3Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION, () -> getOnLeftSide()));
-    scoreCancel.onTrue(new ElevatorReturnToHomeAndZeroCommand(elevatorSubsystem));
-    scoreCancel.onTrue(defaultDriveCommand);
+    BooleanSupplier onLeftSideBooleanSupplier = () -> getOnLeftSide();
+    l1Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L1_ENCODER_POSITION, onLeftSideBooleanSupplier, ElevatorSubsystemConstants.L1_GRABBER_SPEED));
+    l2Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION, onLeftSideBooleanSupplier));
+    l3Score.onTrue(new AutoScoreCommand(driveSubsystem, elevatorSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION, onLeftSideBooleanSupplier));
 
     JoystickButton hpIntakeButton = new JoystickButton(driver, 6);
-    hpIntakeButton.toggleOnTrue(intakeCommand);
+    hpIntakeButton.toggleOnTrue(zeroElevatorAndIntakeCommand);
   }
 
   private void configureDriveBindings() {

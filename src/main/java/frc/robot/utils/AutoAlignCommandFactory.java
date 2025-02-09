@@ -117,4 +117,12 @@ public class AutoAlignCommandFactory {
             new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, elevatorEncoderPosition)
         );
     }
+
+    public static Command getAutoAlignAndScoreCommand(Pose2d currentPosition, ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double elevatorEncoderPosition, boolean onRedAlliance, boolean onLeftSide, double grabberSpeed) {
+        System.out.println(onLeftSide);
+        return new SequentialCommandGroup(
+            getAutoAlignDriveCommand(driveSubsystem, currentPosition, onRedAlliance, onLeftSide),
+            new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, elevatorEncoderPosition, grabberSpeed)
+        );
+    }
 }

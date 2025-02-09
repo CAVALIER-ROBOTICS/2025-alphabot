@@ -7,6 +7,7 @@ package frc.robot.commands.AutoAlign;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ElevatorSubsystemConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.utils.AutoAlignCommandFactory;
@@ -18,12 +19,22 @@ public class AutoScoreCommand extends Command {
   ElevatorSubsystem elevatorSubsystem;
   BooleanSupplier onLeftSide;
   double scoringPosition;
+  double grabberSpeed = ElevatorSubsystemConstants.GRABBER_SPEED;
 
   public AutoScoreCommand(DriveSubsystem driveSubsystem, ElevatorSubsystem elevatorSubsystem, double scoringPosition, BooleanSupplier onLeftSide) {
     this.driveSubsystem = driveSubsystem;
     this.elevatorSubsystem = elevatorSubsystem;
     this.scoringPosition = scoringPosition;
     this.onLeftSide = onLeftSide;
+    addRequirements(driveSubsystem, elevatorSubsystem);
+  }
+
+  public AutoScoreCommand(DriveSubsystem driveSubsystem, ElevatorSubsystem elevatorSubsystem, double scoringPosition, BooleanSupplier onLeftSide, double grabberSpeed) {
+    this.driveSubsystem = driveSubsystem;
+    this.elevatorSubsystem = elevatorSubsystem;
+    this.scoringPosition = scoringPosition;
+    this.onLeftSide = onLeftSide;
+    this.grabberSpeed = grabberSpeed;
     addRequirements(driveSubsystem, elevatorSubsystem);
   }
 
@@ -37,7 +48,7 @@ public class AutoScoreCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted) {    
     System.out.println("Ran!");
     Command alignmentCommand = AutoAlignCommandFactory.getAutoAlignAndScoreCommand(
       driveSubsystem.getPoseEstimator().getPose2d(), 
@@ -45,7 +56,8 @@ public class AutoScoreCommand extends Command {
       driveSubsystem,
       scoringPosition, 
       PathLoader.getShouldFlipPath(),
-      onLeftSide.getAsBoolean()
+      onLeftSide.getAsBoolean(),
+      grabberSpeed
     );
     
     alignmentCommand.schedule();
