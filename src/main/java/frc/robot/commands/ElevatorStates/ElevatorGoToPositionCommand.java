@@ -24,7 +24,9 @@ public class ElevatorGoToPositionCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("Ran elevator go to position");
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

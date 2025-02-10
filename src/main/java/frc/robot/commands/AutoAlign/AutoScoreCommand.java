@@ -40,7 +40,9 @@ public class AutoScoreCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("Running auto score command");
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

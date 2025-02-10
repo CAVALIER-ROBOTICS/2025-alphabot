@@ -16,19 +16,24 @@
     },
     {
       "anchor": {
-        "x": 3.164754098360655,
-        "y": 4.150870901639344
+        "x": 3.1527663934426227,
+        "y": 4.222797131147541
       },
       "prevControl": {
-        "x": 2.9627207831435474,
-        "y": 4.298120823684773
+        "x": 2.950733078225515,
+        "y": 4.37004705319297
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "bruh3"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.622601279317696,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
