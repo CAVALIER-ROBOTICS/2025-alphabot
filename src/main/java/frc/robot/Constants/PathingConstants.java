@@ -33,27 +33,27 @@ public class PathingConstants {
     );
 
     public static final List<Pose2d> LEFT_BLUE_SIDED_SCORING_POSITIONS = Arrays.asList( //gotta mirror em
-        new Pose2d(4.108, 5.335, Rotation2d.fromDegrees(-60)),
-        new Pose2d(3.163, 4.356, Rotation2d.fromDegrees(0.0)),
-        new Pose2d(3.533, 3.047, Rotation2d.fromDegrees(60)),
-        new Pose2d(4.858, 2.711, Rotation2d.fromDegrees(120)),
-        new Pose2d(5.810, 3.689, Rotation2d.fromDegrees(180)),
-        new Pose2d(5.438, 5.007, Rotation2d.fromDegrees(240))
+        new Pose2d(3.811, 5.161, Rotation2d.fromDegrees(-60)),
+        new Pose2d(3.169, 4.010, Rotation2d.fromDegrees(0.0)),
+        new Pose2d(3.842, 2.878, Rotation2d.fromDegrees(60)),
+        new Pose2d(5.155, 2.893, Rotation2d.fromDegrees(120)),
+        new Pose2d(5.800, 4.037, Rotation2d.fromDegrees(180)),
+        new Pose2d(5.135, 5.175, Rotation2d.fromDegrees(240))
     );
 
     public static final List<Pose2d> RIGHT_BLUE_SIDED_SCORING_POSITIONS = Arrays.asList( //gotta mirror em
-        new Pose2d(3.826, 5.174, Rotation2d.fromDegrees(-60)),
-        new Pose2d(3.163, 4.031, Rotation2d.fromDegrees(0.0)),
-        new Pose2d(3.821, 2.879, Rotation2d.fromDegrees(60)),
-        new Pose2d(5.144, 2.879, Rotation2d.fromDegrees(120)),
-        new Pose2d(5.810, 4.018, Rotation2d.fromDegrees(180)),
-        new Pose2d(5.154, 5.167, Rotation2d.fromDegrees(240))
+        new Pose2d(3.525, 5.004, Rotation2d.fromDegrees(-60)),
+        new Pose2d(3.167, 3.679, Rotation2d.fromDegrees(0.0)),
+        new Pose2d(4.126, 2.711, Rotation2d.fromDegrees(60)),
+        new Pose2d(5.446, 3.051, Rotation2d.fromDegrees(120)),
+        new Pose2d(5.809, 4.369, Rotation2d.fromDegrees(180)),
+        new Pose2d(4.849, 5.341, Rotation2d.fromDegrees(240))
     );
 
     public static final double FIELD_WIDTH_METERS = 17.56;
     public static final double FIELD_HEIGHT_METERS = 8.05;
 
     //both are in botspace. decreasing Y moves the bot back, decreasing X moves it right.
-    public static final double X_OFFSET = -0.285;
+    public static final double X_OFFSET = 0.06;
     public static final double Y_OFFSET = 0.1;
 }

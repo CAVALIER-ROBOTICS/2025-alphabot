@@ -114,5 +114,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ElevatorPos",getPosition());
     SmartDashboard.putNumber("CurrentDrawElevator", getElevatorCurrentDraw());
+    SmartDashboard.putNumber("sensorProximity", coralSensor.getProximity());
   }
 }

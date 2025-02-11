@@ -33,6 +33,6 @@
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
   "robotFeatures": [
-    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.0,\"y\":0.169},\"end\":{\"x\":0.5,\"y\":0.169},\"strokeWidth\":0.02}}"
+    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.0,\"y\":0.18},\"end\":{\"x\":0.5,\"y\":0.18},\"strokeWidth\":0.02}}"
   ]
 }
