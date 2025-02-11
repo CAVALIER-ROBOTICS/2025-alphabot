@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = PathLoader.loadAuto("auto");
+    m_autonomousCommand = PathLoader.loadAuto("autoTop");
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
