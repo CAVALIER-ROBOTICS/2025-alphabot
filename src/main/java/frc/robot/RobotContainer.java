@@ -101,7 +101,7 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   }
 
   private void configureManualOverrideBindings() {
-    JoystickButton manualOverride = new JoystickButton(operator, 1);
+    JoystickButton manualOverride = new JoystickButton(operator, 8);
     manualOverride.onTrue(new InstantCommand(() -> {isManuallyOverrided = !isManuallyOverrided;}));
   }
 
