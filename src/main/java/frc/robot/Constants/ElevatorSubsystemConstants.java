@@ -15,14 +15,14 @@ public class ElevatorSubsystemConstants
 
     public static final int NEO550_CURRENT_LIMIT = 30;
 
-    public static final double L1_ENCODER_POSITION = 10;
+    public static final double L1_ENCODER_POSITION = 34;
     public static final double L2_ENCODER_POSITION = 14.5;
     public static final double L3_ENCODER_POSITION = 34;
     public static final double HP_ENCODER_POSITION = 1.5;
     public static final double DEFAULT_POSITION = 1.5; //So the carriage doesn't slam into the base.
 
     public static final double GRABBER_SPEED = 0.5;
-    public static final double L1_GRABBER_SPEED = .25;
+    public static final double L1_GRABBER_SPEED = .15;
     public static final double INTAKE_GRABBER_SPEED = 0.4;
 
     public static final double HOMED_CURRENT_DRAW = 75.0;
