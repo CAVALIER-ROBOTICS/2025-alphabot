@@ -37,7 +37,7 @@ public class PathingConstants {
         new Pose2d(3.169, 4.010, Rotation2d.fromDegrees(0.0)),
         new Pose2d(3.842, 2.878, Rotation2d.fromDegrees(60)),
         new Pose2d(5.155, 2.893, Rotation2d.fromDegrees(120)),
-        new Pose2d(5.800, 4.037, Rotation2d.fromDegrees(180)),
+        new Pose2d(5.803, 4.040, Rotation2d.fromDegrees(180)),
         new Pose2d(5.135, 5.175, Rotation2d.fromDegrees(240))
     );
 
@@ -46,7 +46,7 @@ public class PathingConstants {
         new Pose2d(3.167, 3.679, Rotation2d.fromDegrees(0.0)),
         new Pose2d(4.126, 2.711, Rotation2d.fromDegrees(60)),
         new Pose2d(5.446, 3.051, Rotation2d.fromDegrees(120)),
-        new Pose2d(5.809, 4.369, Rotation2d.fromDegrees(180)),
+        new Pose2d(5.802, 4.370, Rotation2d.fromDegrees(180)),
         new Pose2d(4.849, 5.341, Rotation2d.fromDegrees(240))
     );
 
@@ -54,6 +54,6 @@ public class PathingConstants {
     public static final double FIELD_HEIGHT_METERS = 8.05;
 
     //both are in botspace. decreasing Y moves the bot back, decreasing X moves it right.
-    public static final double X_OFFSET = 0.06;
+    public static final double X_OFFSET = 0.04;
     public static final double Y_OFFSET = 0.1;
 }
