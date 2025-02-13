@@ -58,7 +58,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     primaryConfig.encoder.positionConversionFactor(1.0);
     primaryConfig.voltageCompensation(RobotConstants.NOMINAL_VOLTAGE);
 
-    primaryConfig.closedLoop.pid(.2, 0.0, 0.0);
+    primaryConfig.closedLoop.pid(.3, 0.0, 0.0);
     primaryConfig.closedLoop.maxMotion
       .maxAcceleration(ElevatorSubsystemConstants.MAX_ACCELERATION)
       .maxVelocity(ElevatorSubsystemConstants.MAX_VELOCITY)
