@@ -56,8 +56,7 @@ public class PathLoader {
 
     public static void configureAutoBuilder(DriveSubsystem driveSub, CavbotsPoseEstimator estimator) {
         Consumer<Pose2d> resetPose = pose -> {
-            driveSub.setYaw(pose.getRotation());
-            estimator.setEstimatorPose2d(pose);
+            estimator.resetEstimatorPosition(driveSub.getAngle(), driveSub.getModulePositions(), pose);
         };
 
         Consumer<ChassisSpeeds> drivelol = speeds -> driveSub.autoDrive(speeds);

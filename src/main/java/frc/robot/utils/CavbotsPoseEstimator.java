@@ -44,7 +44,7 @@ public class CavbotsPoseEstimator {
         estimator.update(gyroAngle, position);
     }
 
-    public void setEstimatorPose2d(Pose2d pose) {
-        estimator.resetPose(pose);
+    public void resetEstimatorPosition(Rotation2d gyroAngle, SwerveModulePosition[] modulePositions, Pose2d pose) {
+        estimator.resetPosition(gyroAngle, modulePositions, pose);
     }
 }
