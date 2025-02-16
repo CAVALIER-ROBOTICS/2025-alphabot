@@ -31,6 +31,7 @@ public class ElevatorGoToPositionCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Sending elevator to position");
     boolean runExtruder = runCoralExtruder.getAsBoolean();
     elevatorSubsystem.setPosition(positionSetpoint);
     elevatorSubsystem.setGrabber((runExtruder == true) ? ElevatorSubsystemConstants.GRABBER_SPEED: 0.0);
