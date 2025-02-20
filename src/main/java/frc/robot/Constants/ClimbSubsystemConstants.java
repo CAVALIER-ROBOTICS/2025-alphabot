@@ -5,7 +5,10 @@
 package frc.robot.Constants;
 
 /** Add your docs here. */
-public class ClimbConstants {
-    public static final int PRIMARY_ID = 0;
-    public static final int FOLLOWER_ID = 0;
+public class ClimbSubsystemConstants {
+    public static final int PRIMARY_ID = 47;
+    public static final int FOLLOWER_ID = 33;
+
+    public static final double READY_POSITION = -18;
+    public static final double CLIMB_POSITION = -30;
 }

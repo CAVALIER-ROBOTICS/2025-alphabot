@@ -17,16 +17,20 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Constants.ClimbSubsystemConstants;
 import frc.robot.Constants.ElevatorSubsystemConstants;
 import frc.robot.commands.FieldDriveCommand;
 import frc.robot.commands.SlowFieldDriveCommand;
 import frc.robot.commands.AutoAlign.AutoScoreCommand;
+import frc.robot.commands.ClimbStates.ClimbGoToJoystickSpeedCommand;
+import frc.robot.commands.ClimbStates.ClimbGoToPositionCommand;
 import frc.robot.commands.ElevatorStates.ElevatorGoToPositionCommand;
 import frc.robot.commands.ElevatorStates.ElevatorHPIntakeCommand;
 import frc.robot.commands.ElevatorStates.ElevatorRetractCommand;
 import frc.robot.commands.ElevatorStates.ElevatorReturnToHomeAndZeroCommand;
 import frc.robot.commands.ElevatorStates.RetractCoralAfterIntakingCommand;
 import frc.robot.commands.ElevatorStates.AutonomousElevatorCommands.ExtendToHeightThenScoreCommand;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.utils.PathLoader;
@@ -37,6 +41,7 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
 
   DriveSubsystem driveSubsystem = new DriveSubsystem();
   ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  ClimbSubsystem climbSubsystem = new ClimbSubsystem();
 
   Command defaultDriveCommand = new FieldDriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX);
   Command defaultElevatorCommand = new ElevatorRetractCommand(elevatorSubsystem);
@@ -59,6 +64,7 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   private void configureBindings() {
     configureElevatorBindings();
     configureDriveBindings();
+    // configureClimbBindings();
     configureSideSelectorBindings();
     configureManualOverrideBindings();
   }
@@ -72,6 +78,7 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   private void configureDefaultBindings() {
     driveSubsystem.setDefaultCommand(defaultDriveCommand);
     elevatorSubsystem.setDefaultCommand(defaultElevatorCommand);
+    climbSubsystem.setDefaultCommand(new ClimbGoToJoystickSpeedCommand(climbSubsystem, operator::getRightY));
   }
 
   private void configureElevatorBindings() {
@@ -108,6 +115,14 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   private void configureDriveBindings() {
     JoystickButton zeroDriverGyro = new JoystickButton(driver, 4);
     zeroDriverGyro.onTrue(new InstantCommand(driveSubsystem::driverGyroZero));
+  }
+
+  private void configureClimbBindings() {
+    JoystickButton readyClimb = new JoystickButton(operator, 1);
+    JoystickButton doClimb = new JoystickButton(operator, 2);
+
+    readyClimb.onTrue(new ClimbGoToPositionCommand(climbSubsystem, ClimbSubsystemConstants.READY_POSITION));
+    doClimb.onTrue(new ClimbGoToPositionCommand(climbSubsystem, ClimbSubsystemConstants.CLIMB_POSITION));
   }
 
   private void configureManualOverrideBindings() {
