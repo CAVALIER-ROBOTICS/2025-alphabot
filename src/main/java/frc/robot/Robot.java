@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
   public Robot() {
     m_robotContainer = new RobotContainer();
     AutoAlignCommandFactory.initalize();
+    m_autonomousCommand = PathLoader.loadAuto("autoTop");
   }
 
   @Override
@@ -47,8 +48,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = PathLoader.loadAuto("autoTop");
-
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }

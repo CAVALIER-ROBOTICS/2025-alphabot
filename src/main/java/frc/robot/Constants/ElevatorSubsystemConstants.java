@@ -17,7 +17,7 @@ public class ElevatorSubsystemConstants
 
     public static final double L1_ENCODER_POSITION = 34;
     public static final double L2_ENCODER_POSITION = 13.0;
-    public static final double L3_ENCODER_POSITION = 34;
+    public static final double L3_ENCODER_POSITION = 34.25;
     public static final double HP_ENCODER_POSITION = 1.5;
     public static final double DEFAULT_POSITION = 1.5; //So the carriage doesn't slam into the base.
 
