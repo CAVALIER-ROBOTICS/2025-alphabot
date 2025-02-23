@@ -5,6 +5,8 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 
 public class CameraConstants {
+    public static final String PATH_TO_APRILTAGLAYOUT = "src/main/java/frc/robot/utils/files/2025-reefscape-welded.json";
+
     public static final String LOCALIZATION_CAM_ONE_NAME = "lc1";
     public static final String LOCALIZATION_CAM_TWO_NAME = "lc2";
 
