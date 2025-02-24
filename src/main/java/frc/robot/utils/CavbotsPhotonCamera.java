@@ -28,8 +28,10 @@ public class CavbotsPhotonCamera {
     public CavbotsPhotonCamera(String camName, Transform3d cameraInBotSpace) {
         try {
             fieldLayout = new AprilTagFieldLayout(CameraConstants.PATH_TO_APRILTAGLAYOUT);
+            System.out.println("SUCCESSFULLY LOADED EDITED JSON");
         } catch(IOException e) {
             System.out.println("ERROR: UNABLE TO LOAD EDITED JSON, DEFAULTING TO BUILT-IN JSON FILE");
+            System.out.println(e.getMessage());
             fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
         }
 
