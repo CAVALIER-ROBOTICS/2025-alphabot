@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.PathingConstants;
+import frc.robot.commands.AutoAlign.FollowPrecisePathAndRaiseElevatorAndScoreCommand;
 import frc.robot.commands.AutoAlign.FollowPrecisePathCommand;
 import frc.robot.commands.ElevatorStates.ElevatorGoToPositionAndEndCommand;
 import frc.robot.commands.ElevatorStates.ElevatorRunGrabberAndGoToPositionCommand;
@@ -149,5 +150,19 @@ public class AutoAlignCommandFactory {
             ),
             new ElevatorRunGrabberAndGoToPositionCommand(elevatorSubsystem, elevatorEncoderPosition, grabberSpeed)
         );
+    }
+
+    public static Command getAutoAlignAndScoreCommandParallelV2(Pose2d currentPosition, ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double elevatorEncoderPosition, boolean onRedAlliance, boolean onLeftSide) {
+        initalize();
+        Pose2d goalPose = getClosestPose(currentPosition, onRedAlliance, onLeftSide);
+
+        return new FollowPrecisePathAndRaiseElevatorAndScoreCommand(driveSubsystem, elevatorSubsystem, elevatorEncoderPosition, goalPose);
+    }
+
+    public static Command getAutoAlignAndScoreCommandParallelV2(Pose2d currentPosition, ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double elevatorEncoderPosition, boolean onRedAlliance, boolean onLeftSide, double grabberSpeed) {
+        initalize();
+        Pose2d goalPose = getClosestPose(currentPosition, onRedAlliance, onLeftSide);
+
+        return new FollowPrecisePathAndRaiseElevatorAndScoreCommand(driveSubsystem, elevatorSubsystem, elevatorEncoderPosition, goalPose, grabberSpeed);
     }
 }
