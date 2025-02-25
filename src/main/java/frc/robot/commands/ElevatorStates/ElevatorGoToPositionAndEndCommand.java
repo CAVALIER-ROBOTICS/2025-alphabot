@@ -31,7 +31,7 @@ public class ElevatorGoToPositionAndEndCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorSubsystem.stopAll();
+    // elevatorSubsystem.stopAll();
   }
 
   // Returns true when the command should end.
