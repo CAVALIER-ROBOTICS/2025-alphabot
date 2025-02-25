@@ -12,9 +12,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.PathingConstants;
 import frc.robot.commands.AutoAlign.FollowPrecisePathCommand;
+import frc.robot.commands.ElevatorStates.ElevatorGoToPositionAndEndCommand;
+import frc.robot.commands.ElevatorStates.ElevatorRunGrabberAndGoToPositionCommand;
 import frc.robot.commands.ElevatorStates.AutonomousElevatorCommands.ExtendToHeightThenScoreCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -114,7 +117,7 @@ public class AutoAlignCommandFactory {
         System.out.println(onLeftSide);
         return new SequentialCommandGroup(
             getAutoAlignDriveCommand(driveSubsystem, currentPosition, onRedAlliance, onLeftSide),
-            new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, elevatorEncoderPosition)
+            new ExtendToHeightThenScoreCommand(elevatorSubsystem, elevatorEncoderPosition)
         );
     }
 
@@ -122,7 +125,29 @@ public class AutoAlignCommandFactory {
         System.out.println(onLeftSide);
         return new SequentialCommandGroup(
             getAutoAlignDriveCommand(driveSubsystem, currentPosition, onRedAlliance, onLeftSide),
-            new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, elevatorEncoderPosition, grabberSpeed)
+            new ExtendToHeightThenScoreCommand(elevatorSubsystem, elevatorEncoderPosition, grabberSpeed)
+        );
+    }
+
+    public static Command getAutoAlignAndScoreCommandParallel(Pose2d currentPosition, ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double elevatorEncoderPosition, boolean onRedAlliance, boolean onLeftSide) {
+        System.out.println(onLeftSide);
+        return new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                getAutoAlignDriveCommand(driveSubsystem, currentPosition, onRedAlliance, onLeftSide),
+                new ElevatorGoToPositionAndEndCommand(elevatorSubsystem, elevatorEncoderPosition)
+            ),
+            new ElevatorRunGrabberAndGoToPositionCommand(elevatorSubsystem, elevatorEncoderPosition)
+        );
+    }
+
+    public static Command getAutoAlignAndScoreCommandParallel(Pose2d currentPosition, ElevatorSubsystem elevatorSubsystem, DriveSubsystem driveSubsystem, double elevatorEncoderPosition, boolean onRedAlliance, boolean onLeftSide, double grabberSpeed) {
+        System.out.println(onLeftSide);
+        return new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                getAutoAlignDriveCommand(driveSubsystem, currentPosition, onRedAlliance, onLeftSide),
+                new ElevatorGoToPositionAndEndCommand(elevatorSubsystem, elevatorEncoderPosition)
+            ),
+            new ElevatorRunGrabberAndGoToPositionCommand(elevatorSubsystem, elevatorEncoderPosition, grabberSpeed)
         );
     }
 }

@@ -70,8 +70,8 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
   }
 
   private void configureNamedCommands() {
-    NamedCommands.registerCommand("ScoreL3", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION).withTimeout(1.5));
-    NamedCommands.registerCommand("ScoreL2", new ExtendToHeightThenScoreCommand(elevatorSubsystem, driveSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION).withTimeout(1));
+    NamedCommands.registerCommand("ScoreL3", new ExtendToHeightThenScoreCommand(elevatorSubsystem, ElevatorSubsystemConstants.L3_ENCODER_POSITION).withTimeout(1.5));
+    NamedCommands.registerCommand("ScoreL2", new ExtendToHeightThenScoreCommand(elevatorSubsystem, ElevatorSubsystemConstants.L2_ENCODER_POSITION).withTimeout(1));
     NamedCommands.registerCommand("HPIntake", intakeCommand);
   }
 

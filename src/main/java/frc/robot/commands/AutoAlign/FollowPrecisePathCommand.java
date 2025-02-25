@@ -65,7 +65,7 @@ public class FollowPrecisePathCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveSubsystem.drive(new ChassisSpeeds(0, 0, 0));
+    driveSubsystem.drive(new ChassisSpeeds());
   }
 
   // Returns true when the command should end.

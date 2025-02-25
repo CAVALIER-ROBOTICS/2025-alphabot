@@ -52,7 +52,7 @@ public class AutoScoreCommand extends Command {
   @Override
   public void end(boolean interrupted) {    
     System.out.println("Ran!");
-    Command alignmentCommand = AutoAlignCommandFactory.getAutoAlignAndScoreCommand(
+    Command alignmentCommand = AutoAlignCommandFactory.getAutoAlignAndScoreCommandParallel(
       driveSubsystem.getPoseEstimator().getPose2d(), 
       elevatorSubsystem,
       driveSubsystem,
