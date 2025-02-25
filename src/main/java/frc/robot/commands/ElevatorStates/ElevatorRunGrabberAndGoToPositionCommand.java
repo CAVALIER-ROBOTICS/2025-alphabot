@@ -34,9 +34,7 @@ public class ElevatorRunGrabberAndGoToPositionCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    System.out.println("elevator extension has begun");
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -48,7 +46,6 @@ public class ElevatorRunGrabberAndGoToPositionCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("It is joever. Interrupted? " + String.valueOf(interrupted) + " " + String.valueOf(elevatorSubsystem.getIsCoralInHoldingPosition()));
     elevatorSubsystem.stopAll();
   }
 
