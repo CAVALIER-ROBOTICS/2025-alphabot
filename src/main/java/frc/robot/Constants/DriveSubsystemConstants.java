@@ -25,7 +25,7 @@ public class DriveSubsystemConstants {
     public static final int BRIGHT_STEER_ID = 8;
     public static final int BRIGHT_CANCODER = 23;
 
-    public static final double FLEFT_OFFSET = -0.107378655151995;
+    public static final double FLEFT_OFFSET = -0.107378655151995 + Math.toRadians(13.5);
     public static final double FRIGHT_OFFSET = -2.359262451768116;
     public static final double BLEFT_OFFSET = 1.1995729761265710;
     public static final double BRIGHT_OFFSET = -2.029456582372703;

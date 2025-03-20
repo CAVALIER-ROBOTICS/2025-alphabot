@@ -30,7 +30,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   SparkMax secondary = new SparkMax(ElevatorSubsystemConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
   SparkMax spinGrabber = new SparkMax(ElevatorSubsystemConstants.GRABBER_MOTOR_ID, MotorType.kBrushless);
   
-  ColorSensorV3 coralSensor = new ColorSensorV3(Port.kOnboard);
+  ColorSensorV3 coralSensor = new ColorSensorV3(Port.kMXP);
 
   RelativeEncoder rightEncoder = primary.getEncoder();
 
