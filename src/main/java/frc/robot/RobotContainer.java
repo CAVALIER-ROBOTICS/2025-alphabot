@@ -110,6 +110,10 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
 
     JoystickButton hpIntakeButton = new JoystickButton(driver, 6);
     hpIntakeButton.toggleOnTrue(intakeCommand);
+
+    // added by noah for TRI
+    JoystickButton outTake = new JoystickButton(driver, 5);
+
   }
 
   private void configureDriveBindings() {
