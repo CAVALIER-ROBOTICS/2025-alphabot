@@ -114,7 +114,7 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
     hpIntakeButton.toggleOnTrue(intakeCommand);
 
     JoystickButton l1EjectButton = new JoystickButton(driver, 8);
-    ElevatorRunGrabberAndGoToPositionCommand l1EjectCommand = new ElevatorRunGrabberAndGoToPositionCommand(elevatorSubsystem, 0.0, 0.0); //Owen or Carter, change these zeroes to the relevant constants.
+    ElevatorRunGrabberAndGoToPositionCommand l1EjectCommand = new ElevatorRunGrabberAndGoToPositionCommand(elevatorSubsystem, ElevatorSubsystemConstants.HP_ENCODER_POSITION, ElevatorSubsystemConstants.INTAKE_GRABBER_SPEED); //Owen or Carter, change these zeroes to the relevant constants.
     l1EjectButton.toggleOnTrue(l1EjectCommand);
   }
 
