@@ -35,6 +35,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.utils.PathLoader;
 
+import frc.robot.commands.ElevatorStates.ElevatorRunGrabberAndGoToPositionCommand;
+
 public class RobotContainer { //as of 2/1/2025, we are missing two of our three subsystems. llol!
   XboxController driver = new XboxController(0);
   XboxController operator = new XboxController(1);
@@ -110,6 +112,10 @@ public class RobotContainer { //as of 2/1/2025, we are missing two of our three 
 
     JoystickButton hpIntakeButton = new JoystickButton(driver, 6);
     hpIntakeButton.toggleOnTrue(intakeCommand);
+
+    JoystickButton l1EjectButton = new JoystickButton(driver, 8);
+    ElevatorRunGrabberAndGoToPositionCommand l1EjectCommand = new ElevatorRunGrabberAndGoToPositionCommand(elevatorSubsystem, 0.0, 0.0); //Owen or Carter, change these zeroes to the relevant constants.
+    l1EjectButton.toggleOnTrue(l1EjectCommand);
   }
 
   private void configureDriveBindings() {
